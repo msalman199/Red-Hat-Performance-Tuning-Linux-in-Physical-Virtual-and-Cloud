@@ -1,0 +1,11 @@
+Linux 5.14.0-654.el9.x86_64 (ip-172-31-10-12.ec2.internal) 	10/20/26 	_x86_64_	(4 CPU)
+
+03:30:25        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+03:31:25           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+03:31:25         ens5      6.37      5.92      0.96      1.39      0.00      0.00      0.00      0.00
+
+
+
+Average:        IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+Average:           lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+Average:         ens5      6.37      5.92      0.96      1.39      0.00      0.00      0.00      0.00

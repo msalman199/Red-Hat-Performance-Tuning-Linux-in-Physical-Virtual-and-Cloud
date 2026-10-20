@@ -1,0 +1,9 @@
+"pcp-dstat 6.3.7 CSV Output"
+"Author:","PCP team <pcp@groups.io> and Dag Wieers <dag@wieers.com>",,,,"URL:","https://pcp.io/ and http://dag.wieers.com/home-made/dstat/"
+"Host:","ip-172-31-10-12.ec2.internal",,,,"User:","centos"
+"Cmdline:","dstat -cdnm --output /home/centos/performance_logs/system_20261020_033140.csv 60 3",,,,"Date:","20 Oct 2026 03:31:40 UTC"
+"total usage",,,,,"dsk/total",,"net/total",,"memory usage",,,
+"total usage:usr","total usage:sys","total usage:idl","total usage:wai","total usage:stl","dsk/total:read","dsk/total:writ","net/total:recv","net/total:send","used","free","buf","cach"
+,,,935960,9586824,3036,5094068
+1.750,2.000,95.999,0,0.250,0,0,5216.945,2932.969,961892,9560840,3036,5094120
+0.500,0.250,99.241,0,0,0,0,2845.728,4648.556,924160,9598556,3036,5094136

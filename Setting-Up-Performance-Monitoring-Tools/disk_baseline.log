@@ -1,0 +1,18 @@
+Linux 5.14.0-654.el9.x86_64 (ip-172-31-10-12.ec2.internal) 	10/20/26 	_x86_64_	(4 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+          13.32    0.06    5.60    1.77    0.39   78.86
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+nvme0n1         38.82   1448.37     0.33   0.85    2.32    37.31   62.53   4980.02    25.69  29.12    4.32    79.64    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.36   8.58
+nvme1n1          0.13      3.25     0.00   0.00    0.64    24.26    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.01
+
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           0.36    0.00    0.40    0.00    0.16   99.08
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+nvme0n1          0.00      0.00     0.00   0.00    0.00     0.00    0.43      5.17     0.03   7.14    1.04    11.94    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.01
+nvme1n1          0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.00
+
+
