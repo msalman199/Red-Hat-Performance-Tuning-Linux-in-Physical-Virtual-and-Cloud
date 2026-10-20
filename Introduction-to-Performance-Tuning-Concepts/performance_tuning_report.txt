@@ -1,0 +1,105 @@
+=== Performance Tuning Lab Report ===
+Generated on: Tue Oct 20 02:50:12 UTC 2026
+System: Linux ip-172-31-10-202.ec2.internal 5.14.0-654.el9.x86_64 #1 SMP PREEMPT_DYNAMIC Fri Dec 19 08:34:59 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+
+1. SYSTEM BASELINE
+==================
+=== System Baseline Report ===
+Date: Tue Oct 20 02:45:00 UTC 2026
+
+CPU Information:
+CPU(s):                                  4
+On-line CPU(s) list:                     0-3
+Model name:                              AMD EPYC 7571
+Thread(s) per core:                      2
+Core(s) per socket:                      2
+NUMA node0 CPU(s):                       0-3
+
+Memory Information:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       971Mi        13Gi        19Mi       645Mi        14Gi
+Swap:             0B          0B          0B
+
+Disk Usage:
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        7.5G     0  7.5G   0% /dev
+tmpfs           7.7G     0  7.7G   0% /dev/shm
+tmpfs           3.1G   18M  3.1G   1% /run
+efivarfs        128K  4.1K  119K   4% /sys/firmware/efi/efivars
+/dev/nvme0n1p4   29G  8.3G   21G  29% /
+/dev/nvme0n1p3  966M  800M  100M  89% /boot
+/dev/nvme0n1p2  500M   11M  489M   3% /boot/efi
+tmpfs           1.6G   52K  1.6G   1% /run/user/42
+tmpfs           1.6G   36K  1.6G   1% /run/user/1001
+
+Current Load:
+ 02:45:00 up 1 min,  1 user,  load average: 0.61, 0.36, 0.14
+ 02:45:01 up 1 min,  1 user,  load average: 0.61, 0.36, 0.14
+ 02:45:01 up 1 min,  1 user,  load average: 0.61, 0.36, 0.14
+ 02:45:02 up 1 min,  1 user,  load average: 0.61, 0.36, 0.14
+ 02:45:02 up 1 min,  1 user,  load average: 0.61, 0.36, 0.14
+
+2. PERFORMANCE MONITORING RESULTS
+==================================
+Monitoring data collected successfully
+Key findings from monitoring:
+CPU Usage:
+%Cpu(s):  1.5 us,  1.5 sy,  0.0 ni, 95.6 id,  0.0 wa,  0.0 hi,  0.0 si,  1.5 st
+Memory Usage:
+
+3. BOTTLENECK ANALYSIS
+======================
+Current system analysis:
+=== Bottleneck Analysis Tool ===
+
+1. CPU Analysis:
+   Current CPU usage: 1.4%
+   ✅ CPU usage is normal
+
+2. Memory Analysis:
+   Memory usage: 6.65%
+   ✅ Memory usage is normal
+
+3. Load Average Analysis:
+   Load average: 0.70 (4 cores available)
+   Load per core: .17
+   ✅ Load average is acceptable
+
+4. Disk Usage Analysis:
+   Root filesystem usage: 29%
+   ✅ Disk usage is normal
+
+=== Bottleneck Analysis Complete ===
+
+4. PERFORMANCE TUNING RECOMMENDATIONS
+=====================================
+Based on the analysis, consider the following optimizations:
+
+• CPU Optimization:
+  - Monitor process priorities with 'nice' and 'renice'
+  - Consider CPU affinity settings for critical processes
+  - Evaluate CPU governor settings for power vs performance
+
+• Memory Optimization:
+  - Tune kernel memory parameters in /proc/sys/vm/
+  - Configure swap usage and swappiness settings
+  - Monitor memory leaks in applications
+
+• Disk I/O Optimization:
+  - Adjust I/O scheduler based on workload
+  - Configure filesystem mount options
+  - Consider RAID configurations for performance
+
+• Network Optimization:
+  - Tune network buffer sizes
+  - Configure network interface parameters
+  - Monitor network latency and throughput
+
+5. NEXT STEPS
+=============
+• Implement monitoring solutions for continuous performance tracking
+• Establish performance baselines for comparison
+• Create automated alerting for performance thresholds
+• Document all performance tuning changes
+• Plan regular performance reviews and optimizations
+

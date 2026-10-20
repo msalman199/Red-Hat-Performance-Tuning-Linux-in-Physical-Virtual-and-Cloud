@@ -1,0 +1,154 @@
+=== System Performance Monitoring ===
+Monitoring started at: Tue Oct 20 02:47:59 UTC 2026
+Duration: 60 seconds
+
+=== Timestamp: Tue Oct 20 02:47:59 UTC 2026 ===
+CPU Usage:
+%Cpu(s):  0.0 us,  2.8 sy,  0.0 ni, 95.8 id,  0.0 wa,  0.0 hi,  0.0 si,  1.4 st
+Memory Usage:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       993Mi        13Gi        19Mi       976Mi        14Gi
+Swap:             0B          0B          0B
+Disk I/O:
+Linux 5.14.0-654.el9.x86_64 (ip-172-31-10-202.ec2.internal) 	10/20/26 	_x86_64_	(4 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           5.40    0.05    5.43    4.67    0.88   83.57
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+nvme0n1         82.92   2844.99     2.08   2.45    4.14    34.31   15.22    806.36     3.34  18.02    1.60    52.98    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.37  18.69
+nvme1n1          0.50     11.94     0.00   0.00    0.64    23.78    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.02
+
+
+Network Interfaces:
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    lo:     960      16    0    0    0     0          0         0      960      16    0    0    0     0       0          0
+Load Average:
+ 02:47:59 up 4 min,  1 user,  load average: 0.50, 0.42, 0.20
+----------------------------------------
+=== Timestamp: Tue Oct 20 02:48:09 UTC 2026 ===
+CPU Usage:
+%Cpu(s):  0.0 us,  3.0 sy,  0.0 ni, 97.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+Memory Usage:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       987Mi        13Gi        19Mi       976Mi        14Gi
+Swap:             0B          0B          0B
+Disk I/O:
+Linux 5.14.0-654.el9.x86_64 (ip-172-31-10-202.ec2.internal) 	10/20/26 	_x86_64_	(4 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           5.23    0.05    5.26    4.51    0.86   84.09
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+nvme0n1         80.15   2749.93     2.01   2.45    4.14    34.31   14.72    779.45     3.23  18.01    1.60    52.96    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.36  18.07
+nvme1n1          0.49     11.54     0.00   0.00    0.64    23.78    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.02
+
+
+Network Interfaces:
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    lo:     960      16    0    0    0     0          0         0      960      16    0    0    0     0       0          0
+Load Average:
+ 02:48:10 up 5 min,  1 user,  load average: 0.42, 0.41, 0.20
+----------------------------------------
+=== Timestamp: Tue Oct 20 02:48:20 UTC 2026 ===
+CPU Usage:
+%Cpu(s):  0.0 us,  3.0 sy,  0.0 ni, 97.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+Memory Usage:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       986Mi        13Gi        19Mi       976Mi        14Gi
+Swap:             0B          0B          0B
+Disk I/O:
+Linux 5.14.0-654.el9.x86_64 (ip-172-31-10-202.ec2.internal) 	10/20/26 	_x86_64_	(4 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           5.07    0.05    5.11    4.37    0.83   84.57
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+nvme0n1         77.56   2661.02     1.94   2.45    4.14    34.31   14.29    754.60     3.13  17.97    1.60    52.80    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.34  17.49
+nvme1n1          0.47     11.17     0.00   0.00    0.64    23.78    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.02
+
+
+Network Interfaces:
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    lo:     960      16    0    0    0     0          0         0      960      16    0    0    0     0       0          0
+Load Average:
+ 02:48:20 up 5 min,  1 user,  load average: 0.33, 0.39, 0.19
+----------------------------------------
+=== Timestamp: Tue Oct 20 02:48:30 UTC 2026 ===
+CPU Usage:
+%Cpu(s):  1.5 us,  1.5 sy,  0.0 ni, 97.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+Memory Usage:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       986Mi        13Gi        19Mi       976Mi        14Gi
+Swap:             0B          0B          0B
+Disk I/O:
+Linux 5.14.0-654.el9.x86_64 (ip-172-31-10-202.ec2.internal) 	10/20/26 	_x86_64_	(4 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           4.93    0.04    4.96    4.23    0.81   85.02
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+nvme0n1         75.13   2577.68     1.88   2.45    4.14    34.31   13.85    731.01     3.04  17.98    1.60    52.78    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.33  16.94
+nvme1n1          0.45     10.82     0.00   0.00    0.64    23.78    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.02
+
+
+Network Interfaces:
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    lo:     960      16    0    0    0     0          0         0      960      16    0    0    0     0       0          0
+Load Average:
+ 02:48:30 up 5 min,  1 user,  load average: 0.27, 0.37, 0.19
+----------------------------------------
+=== Timestamp: Tue Oct 20 02:48:40 UTC 2026 ===
+CPU Usage:
+%Cpu(s):  0.0 us,  1.5 sy,  0.0 ni, 98.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+Memory Usage:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       986Mi        13Gi        19Mi       976Mi        14Gi
+Swap:             0B          0B          0B
+Disk I/O:
+Linux 5.14.0-654.el9.x86_64 (ip-172-31-10-202.ec2.internal) 	10/20/26 	_x86_64_	(4 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           4.79    0.04    4.83    4.10    0.79   85.45
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+nvme0n1         72.85   2499.40     1.83   2.45    4.14    34.31   13.43    708.82     2.94  17.98    1.60    52.77    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.32  16.42
+nvme1n1          0.44     10.49     0.00   0.00    0.64    23.78    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.02
+
+
+Network Interfaces:
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    lo:     960      16    0    0    0     0          0         0      960      16    0    0    0     0       0          0
+Load Average:
+ 02:48:40 up 5 min,  1 user,  load average: 0.23, 0.36, 0.19
+----------------------------------------
+=== Timestamp: Tue Oct 20 02:48:50 UTC 2026 ===
+CPU Usage:
+%Cpu(s):  1.5 us,  1.5 sy,  0.0 ni, 95.6 id,  0.0 wa,  0.0 hi,  0.0 si,  1.5 st
+Memory Usage:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       985Mi        13Gi        19Mi       976Mi        14Gi
+Swap:             0B          0B          0B
+Disk I/O:
+Linux 5.14.0-654.el9.x86_64 (ip-172-31-10-202.ec2.internal) 	10/20/26 	_x86_64_	(4 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           4.66    0.04    4.70    3.98    0.77   85.85
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+nvme0n1         70.70   2425.74     1.77   2.45    4.14    34.31   13.09    688.48     2.87  18.00    1.60    52.60    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.31  15.94
+nvme1n1          0.43     10.18     0.00   0.00    0.64    23.78    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.02
+
+
+Network Interfaces:
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    lo:     960      16    0    0    0     0          0         0      960      16    0    0    0     0       0          0
+Load Average:
+ 02:48:50 up 5 min,  1 user,  load average: 0.20, 0.35, 0.18
+----------------------------------------
