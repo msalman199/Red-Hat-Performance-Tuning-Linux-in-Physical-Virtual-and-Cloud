@@ -1,0 +1,417 @@
+execve("./test_app", ["./test_app"], 0x7ffd63132ca8 /* 47 vars */) = 0
+brk(NULL)                               = 0xdd8000
+arch_prctl(0x3001 /* ARCH_??? */, 0x7ffed5bd29d0) = -1 EINVAL (Invalid argument)
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fad3d284000
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=40947, ...}) = 0
+mmap(NULL, 40947, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fad3d27a000
+close(3)                                = 0
+openat(AT_FDCWD, "/lib64/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\320\247\2\0\0\0\0\0"..., 832) = 832
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+pread64(3, "\4\0\0\0 \0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0"..., 48, 848) = 48
+pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0r-\325\247v\2\267X\240o&\343\2\346_q"..., 68, 896) = 68
+fstat(3, {st_mode=S_IFREG|0755, st_size=2553784, ...}) = 0
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+mmap(NULL, 2142160, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fad3d000000
+mmap(0x7fad3d029000, 1531904, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x29000) = 0x7fad3d029000
+mmap(0x7fad3d19f000, 364544, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x19f000) = 0x7fad3d19f000
+mmap(0x7fad3d1f8000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1f7000) = 0x7fad3d1f8000
+mmap(0x7fad3d1fe000, 53200, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7fad3d1fe000
+close(3)                                = 0
+mmap(NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fad3d277000
+arch_prctl(ARCH_SET_FS, 0x7fad3d277740) = 0
+set_tid_address(0x7fad3d277a10)         = 12215
+set_robust_list(0x7fad3d277a20, 24)     = 0
+rseq(0x7fad3d2780e0, 0x20, 0, 0x53053053) = 0
+mprotect(0x7fad3d1f8000, 16384, PROT_READ) = 0
+mprotect(0x403000, 4096, PROT_READ)     = 0
+mprotect(0x7fad3d2bd000, 8192, PROT_READ) = 0
+prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+munmap(0x7fad3d27a000, 40947)           = 0
+clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLDstrace: Process 12216 attached
+, child_tidptr=0x7fad3d277a10) = 12216
+[pid 12216] set_robust_list(0x7fad3d277a20, 24 <unfinished ...>
+[pid 12215] wait4(-1,  <unfinished ...>
+[pid 12216] <... set_robust_list resumed>) = 0
+[pid 12216] execve("/bin/ls", ["ls", "-la", "/tmp"], 0x7ffed5bd2af8 /* 47 vars */) = 0
+[pid 12216] brk(NULL)                   = 0x560bb0463000
+[pid 12216] arch_prctl(0x3001 /* ARCH_??? */, 0x7ffc7fa8d350) = -1 EINVAL (Invalid argument)
+[pid 12216] mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fb0644a9000
+[pid 12216] access("/etc/ld.so.preload", R_OK) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=40947, ...}) = 0
+[pid 12216] mmap(NULL, 40947, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb06449f000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/lib64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0pp\0\0\0\0\0\0"..., 832) = 832
+[pid 12216] fstat(3, {st_mode=S_IFREG|0755, st_size=175744, ...}) = 0
+[pid 12216] mmap(NULL, 181896, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fb064472000
+[pid 12216] mmap(0x7fb064478000, 110592, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x6000) = 0x7fb064478000
+[pid 12216] mmap(0x7fb064493000, 32768, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x21000) = 0x7fb064493000
+[pid 12216] mmap(0x7fb06449b000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x28000) = 0x7fb06449b000
+[pid 12216] mmap(0x7fb06449d000, 5768, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7fb06449d000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/lib64/libcap.so.2", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0P'\0\0\0\0\0\0"..., 832) = 832
+[pid 12216] fstat(3, {st_mode=S_IFREG|0755, st_size=36296, ...}) = 0
+[pid 12216] mmap(NULL, 36920, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fb064468000
+[pid 12216] mmap(0x7fb06446a000, 16384, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2000) = 0x7fb06446a000
+[pid 12216] mmap(0x7fb06446e000, 8192, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x6000) = 0x7fb06446e000
+[pid 12216] mmap(0x7fb064470000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x7000) = 0x7fb064470000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/lib64/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\320\247\2\0\0\0\0\0"..., 832) = 832
+[pid 12216] pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+[pid 12216] pread64(3, "\4\0\0\0 \0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0"..., 48, 848) = 48
+[pid 12216] pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0r-\325\247v\2\267X\240o&\343\2\346_q"..., 68, 896) = 68
+[pid 12216] fstat(3, {st_mode=S_IFREG|0755, st_size=2553784, ...}) = 0
+[pid 12216] pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+[pid 12216] mmap(NULL, 2142160, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fb064200000
+[pid 12216] mmap(0x7fb064229000, 1531904, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x29000) = 0x7fb064229000
+[pid 12216] mmap(0x7fb06439f000, 364544, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x19f000) = 0x7fb06439f000
+[pid 12216] mmap(0x7fb0643f8000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1f7000) = 0x7fb0643f8000
+[pid 12216] mmap(0x7fb0643fe000, 53200, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7fb0643fe000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/lib64/libpcre2-8.so.0", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\220$\0\0\0\0\0\0"..., 832) = 832
+[pid 12216] fstat(3, {st_mode=S_IFREG|0755, st_size=636848, ...}) = 0
+[pid 12216] mmap(NULL, 635440, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fb064164000
+[pid 12216] mmap(0x7fb064166000, 446464, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2000) = 0x7fb064166000
+[pid 12216] mmap(0x7fb0641d3000, 176128, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x6f000) = 0x7fb0641d3000
+[pid 12216] mmap(0x7fb0641fe000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x99000) = 0x7fb0641fe000
+[pid 12216] close(3)                    = 0
+[pid 12216] mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fb064466000
+[pid 12216] arch_prctl(ARCH_SET_FS, 0x7fb0644672c0) = 0
+[pid 12216] set_tid_address(0x7fb064467590) = 12216
+[pid 12216] set_robust_list(0x7fb0644675a0, 24) = 0
+[pid 12216] rseq(0x7fb064467c60, 0x20, 0, 0x53053053) = 0
+[pid 12216] mprotect(0x7fb0643f8000, 16384, PROT_READ) = 0
+[pid 12216] mprotect(0x7fb0641fe000, 4096, PROT_READ) = 0
+[pid 12216] mprotect(0x7fb064470000, 4096, PROT_READ) = 0
+[pid 12216] mprotect(0x7fb06449b000, 4096, PROT_READ) = 0
+[pid 12216] mprotect(0x560bb0235000, 8192, PROT_READ) = 0
+[pid 12216] mprotect(0x7fb0644e2000, 8192, PROT_READ) = 0
+[pid 12216] prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+[pid 12216] munmap(0x7fb06449f000, 40947) = 0
+[pid 12216] prctl(PR_CAPBSET_READ, CAP_MAC_OVERRIDE) = 1
+[pid 12216] prctl(PR_CAPBSET_READ, 0x30 /* CAP_??? */) = -1 EINVAL (Invalid argument)
+[pid 12216] prctl(PR_CAPBSET_READ, CAP_CHECKPOINT_RESTORE) = 1
+[pid 12216] prctl(PR_CAPBSET_READ, 0x2c /* CAP_??? */) = -1 EINVAL (Invalid argument)
+[pid 12216] prctl(PR_CAPBSET_READ, 0x2a /* CAP_??? */) = -1 EINVAL (Invalid argument)
+[pid 12216] prctl(PR_CAPBSET_READ, 0x29 /* CAP_??? */) = -1 EINVAL (Invalid argument)
+[pid 12216] statfs("/sys/fs/selinux", {f_type=SELINUX_MAGIC, f_bsize=4096, f_blocks=0, f_bfree=0, f_bavail=0, f_files=0, f_ffree=0, f_fsid={val=[0, 0]}, f_namelen=255, f_frsize=4096, f_flags=ST_VALID|ST_NOSUID|ST_NOEXEC|ST_RELATIME}) = 0
+[pid 12216] statfs("/sys/fs/selinux", {f_type=SELINUX_MAGIC, f_bsize=4096, f_blocks=0, f_bfree=0, f_bavail=0, f_files=0, f_ffree=0, f_fsid={val=[0, 0]}, f_namelen=255, f_frsize=4096, f_flags=ST_VALID|ST_NOSUID|ST_NOEXEC|ST_RELATIME}) = 0
+[pid 12216] getrandom("\x5b\xbf\xee\xd2\x3d\xcd\x81\xe7", 8, GRND_NONBLOCK) = 8
+[pid 12216] brk(NULL)                   = 0x560bb0463000
+[pid 12216] brk(0x560bb0484000)         = 0x560bb0484000
+[pid 12216] access("/etc/selinux/config", F_OK) = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/locale-archive", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=223542144, ...}) = 0
+[pid 12216] mmap(NULL, 223542144, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb056c00000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/share/locale/locale.alias", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=2998, ...}) = 0
+[pid 12216] read(3, "# Locale name alias data base.\n#"..., 4096) = 2998
+[pid 12216] read(3, "", 4096)           = 0
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_IDENTIFICATION", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_IDENTIFICATION", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=258, ...}) = 0
+[pid 12216] mmap(NULL, 258, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb0644a8000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib64/gconv/gconv-modules.cache", O_RDONLY) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=26988, ...}) = 0
+[pid 12216] mmap(NULL, 26988, PROT_READ, MAP_SHARED, 3, 0) = 0x7fb0644a1000
+[pid 12216] close(3)                    = 0
+[pid 12216] futex(0x7fb0643fda8c, FUTEX_WAKE_PRIVATE, 2147483647) = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_MEASUREMENT", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_MEASUREMENT", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=23, ...}) = 0
+[pid 12216] mmap(NULL, 23, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb0644a0000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_TELEPHONE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_TELEPHONE", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=47, ...}) = 0
+[pid 12216] mmap(NULL, 47, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb06449f000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_ADDRESS", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_ADDRESS", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=127, ...}) = 0
+[pid 12216] mmap(NULL, 127, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb064465000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_NAME", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_NAME", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=62, ...}) = 0
+[pid 12216] mmap(NULL, 62, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb064464000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_PAPER", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_PAPER", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=34, ...}) = 0
+[pid 12216] mmap(NULL, 34, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb064463000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_MESSAGES", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_MESSAGES", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFDIR|0755, st_size=29, ...}) = 0
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=48, ...}) = 0
+[pid 12216] mmap(NULL, 48, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb064462000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_MONETARY", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_MONETARY", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=270, ...}) = 0
+[pid 12216] mmap(NULL, 270, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb064461000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_COLLATE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_COLLATE", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=1406, ...}) = 0
+[pid 12216] mmap(NULL, 1406, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb064460000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_TIME", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_TIME", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=3360, ...}) = 0
+[pid 12216] mmap(NULL, 3360, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb06445f000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_NUMERIC", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_NUMERIC", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=50, ...}) = 0
+[pid 12216] mmap(NULL, 50, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb06445e000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_CTYPE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_CTYPE", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=346132, ...}) = 0
+[pid 12216] mmap(NULL, 346132, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb056bab000
+[pid 12216] close(3)                    = 0
+[pid 12216] ioctl(1, TCGETS, 0x7ffc7fa8d210) = -1 ENOTTY (Inappropriate ioctl for device)
+[pid 12216] ioctl(1, TIOCGWINSZ, 0x7ffc7fa8d300) = -1 ENOTTY (Inappropriate ioctl for device)
+[pid 12216] openat(AT_FDCWD, "/usr/share/locale/C.UTF-8/LC_TIME/coreutils.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/share/locale/C.utf8/LC_TIME/coreutils.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/share/locale/C/LC_TIME/coreutils.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+[pid 12216] statx(AT_FDCWD, "/tmp", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|S_ISVTX|0777, stx_size=4096, ...}) = 0
+[pid 12216] lgetxattr("/tmp", "security.selinux", "system_u:object_r:tmp_t:s0", 255) = 27
+[pid 12216] access("/var/run/setrans/.setrans-unix", F_OK) = -1 ENOENT (No such file or directory)
+[pid 12216] futex(0x7fb06449d520, FUTEX_WAKE_PRIVATE, 2147483647) = 0
+[pid 12216] getxattr("/tmp", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+[pid 12216] connect(3, {sa_family=AF_UNIX, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+[pid 12216] close(3)                    = 0
+[pid 12216] socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+[pid 12216] connect(3, {sa_family=AF_UNIX, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+[pid 12216] close(3)                    = 0
+[pid 12216] newfstatat(AT_FDCWD, "/etc/nsswitch.conf", {st_mode=S_IFREG|0644, st_size=2124, ...}, 0) = 0
+[pid 12216] newfstatat(AT_FDCWD, "/", {st_mode=S_IFDIR|0755, st_size=259, ...}, 0) = 0
+[pid 12216] openat(AT_FDCWD, "/etc/nsswitch.conf", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=2124, ...}) = 0
+[pid 12216] read(3, "#\n# /etc/nsswitch.conf\n#\n# Name "..., 4096) = 2124
+[pid 12216] read(3, "", 4096)           = 0
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=2124, ...}) = 0
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=40947, ...}) = 0
+[pid 12216] mmap(NULL, 40947, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fb064454000
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/lib64/libnss_sss.so.2", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\320%\0\0\0\0\0\0"..., 832) = 832
+[pid 12216] fstat(3, {st_mode=S_IFREG|0755, st_size=53384, ...}) = 0
+[pid 12216] mmap(NULL, 53856, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fb064446000
+[pid 12216] mmap(0x7fb064448000, 32768, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2000) = 0x7fb064448000
+[pid 12216] mmap(0x7fb064450000, 8192, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xa000) = 0x7fb064450000
+[pid 12216] mmap(0x7fb064452000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xb000) = 0x7fb064452000
+[pid 12216] close(3)                    = 0
+[pid 12216] mprotect(0x7fb064452000, 4096, PROT_READ) = 0
+[pid 12216] munmap(0x7fb064454000, 40947) = 0
+[pid 12216] openat(AT_FDCWD, "/var/lib/sss/mc/passwd", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] futex(0x7fb064453214, FUTEX_WAKE_PRIVATE, 2147483647) = 0
+[pid 12216] openat(AT_FDCWD, "/var/lib/sss/mc/passwd", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] futex(0x7fb064453250, FUTEX_WAKE_PRIVATE, 2147483647) = 0
+[pid 12216] newfstatat(AT_FDCWD, "/proc/self/", {st_mode=S_IFDIR|0555, st_size=0, ...}, AT_SYMLINK_NOFOLLOW) = 0
+[pid 12216] getpid()                    = 12216
+[pid 12216] fstat(-1, 0x7ffc7fa8cc00)   = -1 EBADF (Bad file descriptor)
+[pid 12216] socket(AF_UNIX, SOCK_STREAM, 0) = 3
+[pid 12216] fcntl(3, F_GETFL)           = 0x2 (flags O_RDWR)
+[pid 12216] fcntl(3, F_SETFL, O_RDWR|O_NONBLOCK) = 0
+[pid 12216] fcntl(3, F_GETFD)           = 0
+[pid 12216] fcntl(3, F_SETFD, FD_CLOEXEC) = 0
+[pid 12216] connect(3, {sa_family=AF_UNIX, sun_path="/var/lib/sss/pipes/nss"}, 110) = -1 ENOENT (No such file or directory)
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/etc/passwd", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=2121, ...}) = 0
+[pid 12216] lseek(3, 0, SEEK_SET)       = 0
+[pid 12216] read(3, "root:x:0:0:root:/root:/bin/bash\n"..., 4096) = 2121
+[pid 12216] lseek(3, 32, SEEK_SET)      = 32
+[pid 12216] close(3)                    = 0
+[pid 12216] socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+[pid 12216] connect(3, {sa_family=AF_UNIX, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+[pid 12216] close(3)                    = 0
+[pid 12216] socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+[pid 12216] connect(3, {sa_family=AF_UNIX, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+[pid 12216] close(3)                    = 0
+[pid 12216] newfstatat(AT_FDCWD, "/etc/nsswitch.conf", {st_mode=S_IFREG|0644, st_size=2124, ...}, 0) = 0
+[pid 12216] openat(AT_FDCWD, "/var/lib/sss/mc/group", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/var/lib/sss/mc/group", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] newfstatat(AT_FDCWD, "/proc/self/", {st_mode=S_IFDIR|0555, st_size=0, ...}, AT_SYMLINK_NOFOLLOW) = 0
+[pid 12216] getpid()                    = 12216
+[pid 12216] socket(AF_UNIX, SOCK_STREAM, 0) = 3
+[pid 12216] fcntl(3, F_GETFL)           = 0x2 (flags O_RDWR)
+[pid 12216] fcntl(3, F_SETFL, O_RDWR|O_NONBLOCK) = 0
+[pid 12216] fcntl(3, F_GETFD)           = 0
+[pid 12216] fcntl(3, F_SETFD, FD_CLOEXEC) = 0
+[pid 12216] connect(3, {sa_family=AF_UNIX, sun_path="/var/lib/sss/pipes/nss"}, 110) = -1 ENOENT (No such file or directory)
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/etc/group", O_RDONLY|O_CLOEXEC) = 3
+[pid 12216] fstat(3, {st_mode=S_IFREG|0644, st_size=852, ...}) = 0
+[pid 12216] lseek(3, 0, SEEK_SET)       = 0
+[pid 12216] read(3, "root:x:0:\nbin:x:1:\ndaemon:x:2:\ns"..., 4096) = 852
+[pid 12216] lseek(3, 10, SEEK_SET)      = 10
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/tmp", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3
+[pid 12216] fstat(3, {st_mode=S_IFDIR|S_ISVTX|0777, st_size=4096, ...}) = 0
+[pid 12216] getdents64(3, 0x560bb046eb70 /* 18 entries */, 32768) = 1112
+[pid 12216] statx(AT_FDCWD, "/tmp/.", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|S_ISVTX|0777, stx_size=4096, ...}) = 0
+[pid 12216] lgetxattr("/tmp/.", "security.selinux", "system_u:object_r:tmp_t:s0", 255) = 27
+[pid 12216] getxattr("/tmp/.", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/.", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/..", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=STATX_ATTR_MOUNT_ROOT, stx_mode=S_IFDIR|0755, stx_size=259, ...}) = 0
+[pid 12216] lgetxattr("/tmp/..", "security.selinux", "system_u:object_r:root_t:s0", 255) = 28
+[pid 12216] getxattr("/tmp/..", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/..", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/.X11-unix", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|S_ISVTX|0777, stx_size=16, ...}) = 0
+[pid 12216] lgetxattr("/tmp/.X11-unix", "security.selinux", "system_u:object_r:user_tmp_t:s0", 255) = 32
+[pid 12216] getxattr("/tmp/.X11-unix", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/.X11-unix", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/.ICE-unix", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|S_ISVTX|0777, stx_size=18, ...}) = 0
+[pid 12216] lgetxattr("/tmp/.ICE-unix", "security.selinux", "system_u:object_r:user_tmp_t:s0", 255) = 32
+[pid 12216] getxattr("/tmp/.ICE-unix", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/.ICE-unix", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/dbus-RBGUQteB4R", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFSOCK|0777, stx_size=0, ...}) = 0
+[pid 12216] lgetxattr("/tmp/dbus-RBGUQteB4R", "security.selinux", "system_u:object_r:user_tmp_t:s0", 255) = 32
+[pid 12216] getxattr("/tmp/dbus-RBGUQteB4R", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] newfstatat(AT_FDCWD, "/etc/nsswitch.conf", {st_mode=S_IFREG|0644, st_size=2124, ...}, 0) = 0
+[pid 12216] openat(AT_FDCWD, "/var/lib/sss/mc/passwd", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/var/lib/sss/mc/passwd", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] newfstatat(AT_FDCWD, "/proc/self/", {st_mode=S_IFDIR|0555, st_size=0, ...}, AT_SYMLINK_NOFOLLOW) = 0
+[pid 12216] getpid()                    = 12216
+[pid 12216] socket(AF_UNIX, SOCK_STREAM, 0) = 4
+[pid 12216] fcntl(4, F_GETFL)           = 0x2 (flags O_RDWR)
+[pid 12216] fcntl(4, F_SETFL, O_RDWR|O_NONBLOCK) = 0
+[pid 12216] fcntl(4, F_GETFD)           = 0
+[pid 12216] fcntl(4, F_SETFD, FD_CLOEXEC) = 0
+[pid 12216] connect(4, {sa_family=AF_UNIX, sun_path="/var/lib/sss/pipes/nss"}, 110) = -1 ENOENT (No such file or directory)
+[pid 12216] close(4)                    = 0
+[pid 12216] openat(AT_FDCWD, "/etc/passwd", O_RDONLY|O_CLOEXEC) = 4
+[pid 12216] fstat(4, {st_mode=S_IFREG|0644, st_size=2121, ...}) = 0
+[pid 12216] lseek(4, 0, SEEK_SET)       = 0
+[pid 12216] read(4, "root:x:0:0:root:/root:/bin/bash\n"..., 4096) = 2121
+[pid 12216] lseek(4, 1737, SEEK_SET)    = 1737
+[pid 12216] close(4)                    = 0
+[pid 12216] newfstatat(AT_FDCWD, "/etc/nsswitch.conf", {st_mode=S_IFREG|0644, st_size=2124, ...}, 0) = 0
+[pid 12216] openat(AT_FDCWD, "/var/lib/sss/mc/group", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/var/lib/sss/mc/group", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] newfstatat(AT_FDCWD, "/proc/self/", {st_mode=S_IFDIR|0555, st_size=0, ...}, AT_SYMLINK_NOFOLLOW) = 0
+[pid 12216] getpid()                    = 12216
+[pid 12216] socket(AF_UNIX, SOCK_STREAM, 0) = 4
+[pid 12216] fcntl(4, F_GETFL)           = 0x2 (flags O_RDWR)
+[pid 12216] fcntl(4, F_SETFL, O_RDWR|O_NONBLOCK) = 0
+[pid 12216] fcntl(4, F_GETFD)           = 0
+[pid 12216] fcntl(4, F_SETFD, FD_CLOEXEC) = 0
+[pid 12216] connect(4, {sa_family=AF_UNIX, sun_path="/var/lib/sss/pipes/nss"}, 110) = -1 ENOENT (No such file or directory)
+[pid 12216] close(4)                    = 0
+[pid 12216] openat(AT_FDCWD, "/etc/group", O_RDONLY|O_CLOEXEC) = 4
+[pid 12216] fstat(4, {st_mode=S_IFREG|0644, st_size=852, ...}) = 0
+[pid 12216] lseek(4, 0, SEEK_SET)       = 0
+[pid 12216] read(4, "root:x:0:\nbin:x:1:\ndaemon:x:2:\ns"..., 4096) = 852
+[pid 12216] lseek(4, 739, SEEK_SET)     = 739
+[pid 12216] close(4)                    = 0
+[pid 12216] statx(AT_FDCWD, "/tmp/dbus-wF5f7MTRpX", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFSOCK|0777, stx_size=0, ...}) = 0
+[pid 12216] lgetxattr("/tmp/dbus-wF5f7MTRpX", "security.selinux", "system_u:object_r:user_tmp_t:s0", 255) = 32
+[pid 12216] getxattr("/tmp/dbus-wF5f7MTRpX", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/dbus-6edrfFy7Lx", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFSOCK|0777, stx_size=0, ...}) = 0
+[pid 12216] lgetxattr("/tmp/dbus-6edrfFy7Lx", "security.selinux", "system_u:object_r:user_tmp_t:s0", 255) = 32
+[pid 12216] getxattr("/tmp/dbus-6edrfFy7Lx", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-colord.service-F3Oc8M", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|0700, stx_size=17, ...}) = 0
+[pid 12216] lgetxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-colord.service-F3Oc8M", "security.selinux", "system_u:object_r:tmp_t:s0", 255) = 27
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-colord.service-F3Oc8M", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-colord.service-F3Oc8M", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/dbus-iIbF2lnhi9", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFSOCK|0777, stx_size=0, ...}) = 0
+[pid 12216] lgetxattr("/tmp/dbus-iIbF2lnhi9", "security.selinux", "system_u:object_r:user_tmp_t:s0", 255) = 32
+[pid 12216] getxattr("/tmp/dbus-iIbF2lnhi9", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/.XIM-unix", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|S_ISVTX|0777, stx_size=6, ...}) = 0
+[pid 12216] lgetxattr("/tmp/.XIM-unix", "security.selinux", "system_u:object_r:tmp_t:s0", 255) = 27
+[pid 12216] getxattr("/tmp/.XIM-unix", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/.XIM-unix", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/.font-unix", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|S_ISVTX|0777, stx_size=6, ...}) = 0
+[pid 12216] lgetxattr("/tmp/.font-unix", "security.selinux", "system_u:object_r:user_fonts_t:s"..., 255) = 34
+[pid 12216] getxattr("/tmp/.font-unix", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/.font-unix", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-dbus-broker.service-sXznoC", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|0700, stx_size=17, ...}) = 0
+[pid 12216] lgetxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-dbus-broker.service-sXznoC", "security.selinux", "system_u:object_r:tmp_t:s0", 255) = 27
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-dbus-broker.service-sXznoC", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-dbus-broker.service-sXznoC", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-chronyd.service-rQ6I4x", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|0700, stx_size=17, ...}) = 0
+[pid 12216] lgetxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-chronyd.service-rQ6I4x", "security.selinux", "system_u:object_r:tmp_t:s0", 255) = 27
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-chronyd.service-rQ6I4x", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-chronyd.service-rQ6I4x", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-irqbalance.service-Wv4dPj", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|0700, stx_size=17, ...}) = 0
+[pid 12216] lgetxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-irqbalance.service-Wv4dPj", "security.selinux", "system_u:object_r:tmp_t:s0", 255) = 27
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-irqbalance.service-Wv4dPj", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-irqbalance.service-Wv4dPj", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-rtkit-daemon.service-9oGQZP", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|0700, stx_size=17, ...}) = 0
+[pid 12216] lgetxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-rtkit-daemon.service-9oGQZP", "security.selinux", "system_u:object_r:tmp_t:s0", 255) = 27
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-rtkit-daemon.service-9oGQZP", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-rtkit-daemon.service-9oGQZP", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-systemd-logind.service-geHaSO", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|0700, stx_size=17, ...}) = 0
+[pid 12216] lgetxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-systemd-logind.service-geHaSO", "security.selinux", "system_u:object_r:tmp_t:s0", 255) = 27
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-systemd-logind.service-geHaSO", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-systemd-logind.service-geHaSO", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-upower.service-MfXKFW", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|0700, stx_size=17, ...}) = 0
+[pid 12216] lgetxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-upower.service-MfXKFW", "security.selinux", "system_u:object_r:tmp_t:s0", 255) = 27
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-upower.service-MfXKFW", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-upower.service-MfXKFW", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] statx(AT_FDCWD, "/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-kdump.service-QY3pNe", AT_STATX_SYNC_AS_STAT|AT_SYMLINK_NOFOLLOW|AT_NO_AUTOMOUNT, STATX_MODE|STATX_NLINK|STATX_UID|STATX_GID|STATX_MTIME|STATX_SIZE, {stx_mask=STATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=0, stx_mode=S_IFDIR|0700, stx_size=17, ...}) = 0
+[pid 12216] lgetxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-kdump.service-QY3pNe", "security.selinux", "system_u:object_r:tmp_t:s0", 255) = 27
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-kdump.service-QY3pNe", "system.posix_acl_access", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getxattr("/tmp/systemd-private-f4cbb3ab59db422d8ac163aa573889ea-kdump.service-QY3pNe", "system.posix_acl_default", NULL, 0) = -1 ENODATA (No data available)
+[pid 12216] getdents64(3, 0x560bb046eb70 /* 0 entries */, 32768) = 0
+[pid 12216] close(3)                    = 0
+[pid 12216] openat(AT_FDCWD, "/usr/share/locale/C.UTF-8/LC_MESSAGES/coreutils.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/share/locale/C.utf8/LC_MESSAGES/coreutils.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+[pid 12216] openat(AT_FDCWD, "/usr/share/locale/C/LC_MESSAGES/coreutils.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+[pid 12216] fstat(1, {st_mode=S_IFREG|0644, st_size=37265, ...}) = 0
+[pid 12216] openat(AT_FDCWD, "/etc/localtime", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[pid 12216] write(1, "total 4\ndrwxrwxrwt. 14 root root"..., 1483total 4
+drwxrwxrwt. 14 root root 4096 Oct 21 01:47 .
+drwxr-xr-x. 20 root root  259 Sep 12 11:56 ..
+drwxrwxrwt.  2 root root   18 Oct 21 01:35 .ICE-unix
+drwxrwxrwt.  2 root root   16 Oct 21 01:35 .X11-unix
+drwxrwxrwt.  2 root root    6 Jul  3 06:16 .XIM-unix
+drwxrwxrwt.  2 root root    6 Jul  3 06:16 .font-unix
+srwxrwxrwx.  1 gdm  gdm     0 Oct 21 01:35 dbus-6edrfFy7Lx
+srwxrwxrwx.  1 gdm  gdm     0 Jul  3 06:17 dbus-RBGUQteB4R
+srwxrwxrwx.  1 gdm  gdm     0 Jul  3 05:54 dbus-iIbF2lnhi9
+srwxrwxrwx.  1 gdm  gdm     0 Sep 12 11:57 dbus-wF5f7MTRpX
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-chronyd.service-rQ6I4x
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-colord.service-F3Oc8M
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-dbus-broker.service-sXznoC
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-irqbalance.service-Wv4dPj
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-kdump.service-QY3pNe
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-rtkit-daemon.service-9oGQZP
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-systemd-logind.service-geHaSO
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-upower.service-MfXKFW
+) = 1483
+[pid 12216] close(1)                    = 0
+[pid 12216] close(2)                    = 0
+[pid 12216] exit_group(0)               = ?
+[pid 12216] +++ exited with 0 +++
+<... wait4 resumed>NULL, 0, NULL)       = 12216
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=12216, si_uid=1001, si_status=0, si_utime=0, si_stime=1 /* 0.01 s */} ---
+fstat(1, {st_mode=S_IFREG|0644, st_size=39332, ...}) = 0
+getrandom("\x96\x5f\xc5\x54\x42\x50\xcf\xbc", 8, GRND_NONBLOCK) = 8
+brk(NULL)                               = 0xdd8000
+brk(0xdf9000)                           = 0xdf9000
+write(1, "Child process completed\n", 24Child process completed
+) = 24
+exit_group(0)                           = ?
++++ exited with 0 +++

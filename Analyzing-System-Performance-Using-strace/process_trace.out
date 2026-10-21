@@ -1,0 +1,26 @@
+execve("./test_app", ["./test_app"], 0x7fff37572010 /* 47 vars */) = 0
+clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7fa7bd04ea10) = 12221
+wait4(-1, total 4
+drwxrwxrwt. 14 root root 4096 Oct 21 01:47 .
+drwxr-xr-x. 20 root root  259 Sep 12 11:56 ..
+drwxrwxrwt.  2 root root   18 Oct 21 01:35 .ICE-unix
+drwxrwxrwt.  2 root root   16 Oct 21 01:35 .X11-unix
+drwxrwxrwt.  2 root root    6 Jul  3 06:16 .XIM-unix
+drwxrwxrwt.  2 root root    6 Jul  3 06:16 .font-unix
+srwxrwxrwx.  1 gdm  gdm     0 Oct 21 01:35 dbus-6edrfFy7Lx
+srwxrwxrwx.  1 gdm  gdm     0 Jul  3 06:17 dbus-RBGUQteB4R
+srwxrwxrwx.  1 gdm  gdm     0 Jul  3 05:54 dbus-iIbF2lnhi9
+srwxrwxrwx.  1 gdm  gdm     0 Sep 12 11:57 dbus-wF5f7MTRpX
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-chronyd.service-rQ6I4x
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-colord.service-F3Oc8M
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-dbus-broker.service-sXznoC
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-irqbalance.service-Wv4dPj
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-kdump.service-QY3pNe
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-rtkit-daemon.service-9oGQZP
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-systemd-logind.service-geHaSO
+drwx------.  3 root root   17 Oct 21 01:35 systemd-private-f4cbb3ab59db422d8ac163aa573889ea-upower.service-MfXKFW
+NULL, 0, NULL)                = 12221
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=12221, si_uid=1001, si_status=0, si_utime=0, si_stime=0} ---
+Child process completed
+exit_group(0)                           = ?
++++ exited with 0 +++

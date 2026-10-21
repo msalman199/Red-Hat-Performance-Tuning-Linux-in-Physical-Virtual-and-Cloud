@@ -1,0 +1,8 @@
+strace: Process 11223 attached
+strace: Process 11223 detached
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 97.43    0.001288          21        59         1 poll
+  2.57    0.000034          17         2           restart_syscall
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.001322          21        61         1 total
