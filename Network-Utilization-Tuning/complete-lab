@@ -1,0 +1,503 @@
+Lab 12: Network Utilization Tuning
+Objectives
+By the end of this lab, students will be able to:
+
+Understand the fundamentals of network performance optimization in Linux systems
+Modify TCP buffer sizes using sysctl to improve network throughput
+Configure network interface settings using ethtool for optimal performance
+Measure network performance using iperf3 (including JSON output) and analyze results reliably
+Apply systematic tuning methodologies to optimize network utilization and troubleshoot bottlenecks
+Prerequisites
+Before starting this lab, students should have:
+
+Basic understanding of Linux command line operations
+Familiarity with network concepts (TCP/IP, bandwidth, latency, RTT)
+Knowledge of basic system administration tasks (sudo, systemd, file editing)
+Understanding of performance monitoring concepts (throughput, jitter, packet loss)
+Access to root or sudo privileges on the lab system
+Install the required tools on both machines before starting (commands cover both major distro families):
+
+# For RHEL/CentOS/Rocky/Alma
+sudo yum install -y iperf3 ethtool sysstat bc jq hping3
+
+# For Ubuntu/Debian
+sudo apt-get update
+sudo apt-get install -y iperf3 ethtool sysstat bc jq hping3
+Verify installation:
+
+iperf3 --version
+ethtool --version
+jq --version
+bc --version
+Lab Environment Setup
+Ready-to-Use Cloud Machines: Al Nafi provides Linux-based cloud machines for this lab. Simply click Start Lab to access your pre-configured environment. No need to build your own VM or install additional software.
+
+Your lab environment includes:
+
+Two CentOS/RHEL 8+ or Ubuntu 20.04+ virtual machines
+Pre-installed network performance tools (iperf3, ethtool, sysstat)
+Root access for system configuration changes
+Network connectivity between machines for testing
+Throughout this lab, machine A is the server and machine B is the client. Replace SERVER_IP with machine A's actual IP address (find it with ip addr show on machine A).
+
+Task 1: Baseline Network Performance Assessment
+Subtask 1.1: Initial System Information Gathering
+Step 1: Display current network interfaces and statistics
+
+# Display all network interfaces
+ip addr show
+
+# Check interface statistics
+ip -s link show
+
+# Identify the primary interface used for the default route
+INTERFACE=$(ip route | grep default | awk '{print $5}' | head -1)
+echo "Primary interface: $INTERFACE"
+Step 2: Examine current TCP buffer settings
+
+sysctl net.core.rmem_max
+sysctl net.core.wmem_max
+sysctl net.core.rmem_default
+sysctl net.core.wmem_default
+sysctl net.ipv4.tcp_rmem
+sysctl net.ipv4.tcp_wmem
+
+sysctl -a 2>/dev/null | grep -E "(net.core|net.ipv4.tcp)" | head -20
+Step 3: Check ethtool settings for the primary interface
+
+ethtool $INTERFACE
+ethtool -g $INTERFACE
+ethtool -k $INTERFACE
+Deliverable 1.1: A terminal capture (or saved text file ~/network_tuning_results/baseline_config.txt) showing the interface name, current rmem_max/wmem_max values, and current ring buffer settings. Expected result: values such as rmem_max = 212992 (RHEL/Ubuntu default) confirming buffers have not yet been tuned.
+
+Subtask 1.2: Establish Baseline Performance
+Step 1: Start the iperf3 server on machine A
+
+iperf3 -s -p 5001
+Step 2: From machine B, run baseline tests and capture both human-readable and JSON output
+
+mkdir -p ~/network_tuning_results
+cd ~/network_tuning_results
+
+SERVER_IP="192.168.1.100"   # Replace with your server's actual IP
+
+echo "=== BASELINE PERFORMANCE TEST ===" > baseline_results.txt
+date >> baseline_results.txt
+
+# Human-readable TCP throughput test
+echo "TCP Throughput Test:" >> baseline_results.txt
+iperf3 -c $SERVER_IP -p 5001 -t 30 >> baseline_results.txt
+
+# JSON output for reliable machine parsing (used later in Task 4)
+iperf3 -c $SERVER_IP -p 5001 -t 30 -J > baseline_results.json
+
+# UDP throughput test
+echo "UDP Throughput Test:" >> baseline_results.txt
+iperf3 -c $SERVER_IP -p 5001 -u -b 1G -t 30 >> baseline_results.txt
+
+# Latency test using ping
+echo "Latency Test:" >> baseline_results.txt
+ping -c 100 $SERVER_IP >> baseline_results.txt
+Step 3: Extract the baseline throughput from the JSON file with jq to confirm it parses correctly
+
+jq '.end.sum_received.bits_per_second' baseline_results.json
+Deliverable 1.2: Files baseline_results.txt, baseline_results.json, and a printed floating-point number of bits per second from the jq command (for example 941230000). This confirms JSON parsing works before you rely on it in Task 4.
+
+Task 2: TCP Buffer Size Optimization
+Subtask 2.1: Calculate Optimal Buffer Sizes
+Step 1: Create and run a buffer calculation script based on the Bandwidth-Delay Product (BDP)
+
+cat > ~/calculate_buffers.sh << 'EOF'
+#!/bin/bash
+echo "=== Buffer Size Calculation ==="
+
+INTERFACE=$(ip route | grep default | awk '{print $5}' | head -1)
+SPEED=$(ethtool $INTERFACE 2>/dev/null | grep "Speed:" | awk '{print $2}' | sed 's/Mb\/s//')
+
+if [ -z "$SPEED" ] || [ "$SPEED" = "Unknown!" ]; then
+    SPEED=1000  # Default to 1Gbps if unable to detect
+fi
+
+echo "Interface: $INTERFACE"
+echo "Speed: ${SPEED}Mbps"
+
+GATEWAY=$(ip route | grep default | awk '{print $3}' | head -1)
+RTT=$(ping -c 5 $GATEWAY 2>/dev/null | tail -1 | awk -F'/' '{print $5}' | cut -d'.' -f1)
+
+if [ -z "$RTT" ]; then
+    RTT=1
+fi
+
+echo "Estimated RTT: ${RTT}ms"
+
+# BDP (bytes) = (Speed_Mbps * RTT_ms * 1000) / 8
+BDP=$(echo "scale=0; ($SPEED * $RTT * 1000) / 8" | bc -l 2>/dev/null || echo $((SPEED * RTT * 125)))
+echo "Calculated BDP: ${BDP} bytes"
+
+RECOMMENDED_BUFFER=$((BDP * 2))
+echo "Recommended buffer size: ${RECOMMENDED_BUFFER} bytes"
+
+if [ $RECOMMENDED_BUFFER -lt 65536 ]; then
+    RECOMMENDED_BUFFER=65536
+fi
+
+if [ $RECOMMENDED_BUFFER -gt 33554432 ]; then
+    RECOMMENDED_BUFFER=33554432
+fi
+
+echo "Final recommended buffer size: ${RECOMMENDED_BUFFER} bytes"
+EOF
+
+chmod +x ~/calculate_buffers.sh
+~/calculate_buffers.sh
+Deliverable 2.1: Console output showing Interface, Speed, RTT, BDP, and a final recommended buffer size between 65536 and 33554432 bytes.
+
+Subtask 2.2: Apply TCP Buffer Optimizations
+Step 1: Back up the current configuration and apply new sysctl settings
+
+sudo cp /etc/sysctl.conf /etc/sysctl.conf.backup
+
+cat > ~/network_optimization.conf << 'EOF'
+# Network Performance Tuning Configuration
+
+net.core.rmem_max = 33554432
+net.core.wmem_max = 33554432
+net.core.rmem_default = 262144
+net.core.wmem_default = 262144
+
+net.ipv4.tcp_rmem = 4096 262144 33554432
+net.ipv4.tcp_wmem = 4096 262144 33554432
+
+net.ipv4.tcp_window_scaling = 1
+net.ipv4.tcp_sack = 1
+net.ipv4.tcp_timestamps = 1
+
+net.core.netdev_max_backlog = 5000
+net.core.somaxconn = 1024
+
+net.ipv4.tcp_congestion_control = bbr
+net.ipv4.tcp_fastopen = 3
+EOF
+
+sudo cp ~/network_optimization.conf /etc/sysctl.d/99-network-performance.conf
+sudo sysctl -p /etc/sysctl.d/99-network-performance.conf
+Step 2: Verify the changes
+
+sysctl net.core.rmem_max net.core.wmem_max net.ipv4.tcp_rmem net.ipv4.tcp_wmem
+sysctl net.ipv4.tcp_available_congestion_control
+sysctl net.ipv4.tcp_congestion_control
+If bbr is not in tcp_available_congestion_control, load the module first:
+
+sudo modprobe tcp_bbr
+echo "tcp_bbr" | sudo tee -a /etc/modules-load.d/modules.conf
+sudo sysctl -p /etc/sysctl.d/99-network-performance.conf
+Deliverable 2.2: sysctl net.core.rmem_max returns 33554432 and sysctl net.ipv4.tcp_congestion_control returns bbr (or cubic with a documented reason if bbr cannot be loaded).
+
+Subtask 2.3: Test Performance After TCP Buffer Optimization
+cd ~/network_tuning_results
+
+echo "=== POST TCP BUFFER OPTIMIZATION TEST ===" > tcp_optimized_results.txt
+date >> tcp_optimized_results.txt
+
+echo "TCP Throughput Test (Optimized Buffers):" >> tcp_optimized_results.txt
+iperf3 -c $SERVER_IP -p 5001 -t 30 -w 1M >> tcp_optimized_results.txt
+
+iperf3 -c $SERVER_IP -p 5001 -t 30 -w 1M -J > tcp_optimized_results.json
+
+echo "TCP Parallel Streams Test:" >> tcp_optimized_results.txt
+iperf3 -c $SERVER_IP -p 5001 -t 30 -P 4 >> tcp_optimized_results.txt
+Deliverable 2.3: tcp_optimized_results.txt and tcp_optimized_results.json exist, and the reported throughput (check with jq '.end.sum_received.bits_per_second' tcp_optimized_results.json) is equal to or greater than the baseline value recorded in Task 1.
+
+Task 3: Network Interface Optimization with ethtool
+Subtask 3.1: Optimize Ring Buffer Sizes
+INTERFACE=$(ip route | grep default | awk '{print $5}' | head -1)
+echo "Current ring buffer settings for $INTERFACE:"
+ethtool -g $INTERFACE
+
+cat > ~/optimize_ring_buffers.sh << 'EOF'
+#!/bin/bash
+INTERFACE=$(ip route | grep default | awk '{print $5}' | head -1)
+
+echo "Optimizing ring buffers for interface: $INTERFACE"
+
+MAX_RX=$(ethtool -g $INTERFACE | awk '/Pre-set maximums/{f=1} f && /^RX:/{print $2; exit}')
+MAX_TX=$(ethtool -g $INTERFACE | awk '/Pre-set maximums/{f=1} f && /^TX:/{print $2; exit}')
+
+echo "Maximum RX ring buffer: $MAX_RX"
+echo "Maximum TX ring buffer: $MAX_TX"
+
+if [ -n "$MAX_RX" ] && [ "$MAX_RX" != "n/a" ]; then
+    sudo ethtool -G $INTERFACE rx $MAX_RX
+fi
+
+if [ -n "$MAX_TX" ] && [ "$MAX_TX" != "n/a" ]; then
+    sudo ethtool -G $INTERFACE tx $MAX_TX
+fi
+
+echo "New ring buffer settings:"
+ethtool -g $INTERFACE
+EOF
+
+chmod +x ~/optimize_ring_buffers.sh
+~/optimize_ring_buffers.sh
+Deliverable 3.1: ethtool -g $INTERFACE output shows "Current hardware settings" RX/TX values equal to the "Pre-set maximums" values (unless the NIC driver is virtual and does not support resizing, in which case the script should print not supported and the student notes this in their results file).
+
+Subtask 3.2: Configure Hardware Offload Features and Interrupt Coalescing
+cat > ~/optimize_offloads.sh << 'EOF'
+#!/bin/bash
+INTERFACE=$(ip route | grep default | awk '{print $5}' | head -1)
+
+echo "Optimizing offload features for interface: $INTERFACE"
+
+sudo ethtool -K $INTERFACE tso on 2>/dev/null && echo "TSO: enabled" || echo "TSO: not supported"
+sudo ethtool -K $INTERFACE gso on 2>/dev/null && echo "GSO: enabled" || echo "GSO: not supported"
+sudo ethtool -K $INTERFACE gro on 2>/dev/null && echo "GRO: enabled" || echo "GRO: not supported"
+sudo ethtool -K $INTERFACE rx on 2>/dev/null && echo "RX checksum: enabled" || echo "RX checksum: not supported"
+sudo ethtool -K $INTERFACE tx on 2>/dev/null && echo "TX checksum: enabled" || echo "TX checksum: not supported"
+sudo ethtool -K $INTERFACE sg on 2>/dev/null && echo "Scatter-gather: enabled" || echo "Scatter-gather: not supported"
+
+echo ""
+echo "Current offload settings:"
+ethtool -k $INTERFACE | grep -E "(tcp-segmentation-offload|generic-segmentation-offload|generic-receive-offload|rx-checksumming|tx-checksumming|scatter-gather)"
+EOF
+
+chmod +x ~/optimize_offloads.sh
+~/optimize_offloads.sh
+
+cat > ~/optimize_coalescing.sh << 'EOF'
+#!/bin/bash
+INTERFACE=$(ip route | grep default | awk '{print $5}' | head -1)
+
+echo "Current coalescing settings:"
+ethtool -c $INTERFACE
+
+sudo ethtool -C $INTERFACE adaptive-rx on adaptive-tx on 2>/dev/null && echo "Adaptive coalescing: enabled" || echo "Adaptive coalescing: not supported"
+sudo ethtool -C $INTERFACE rx-usecs 50 2>/dev/null && echo "RX interrupt delay: 50 usecs" || echo "RX interrupt delay: not configurable"
+sudo ethtool -C $INTERFACE tx-usecs 50 2>/dev/null && echo "TX interrupt delay: 50 usecs" || echo "TX interrupt delay: not configurable"
+
+echo "New coalescing settings:"
+ethtool -c $INTERFACE
+EOF
+
+chmod +x ~/optimize_coalescing.sh
+~/optimize_coalescing.sh
+Step 3: Persist all ethtool changes across reboots using a systemd oneshot service
+
+sudo tee /usr/local/bin/ethtool_persistent.sh > /dev/null << 'EOF'
+#!/bin/bash
+INTERFACE=$(ip route | grep default | awk '{print $5}' | head -1)
+[ -z "$INTERFACE" ] && exit 1
+
+MAX_RX=$(ethtool -g $INTERFACE | awk '/Pre-set maximums/{f=1} f && /^RX:/{print $2; exit}')
+MAX_TX=$(ethtool -g $INTERFACE | awk '/Pre-set maximums/{f=1} f && /^TX:/{print $2; exit}')
+[ -n "$MAX_RX" ] && [ "$MAX_RX" != "n/a" ] && ethtool -G $INTERFACE rx $MAX_RX
+[ -n "$MAX_TX" ] && [ "$MAX_TX" != "n/a" ] && ethtool -G $INTERFACE tx $MAX_TX
+
+ethtool -K $INTERFACE tso on gso on gro on rx on tx on sg on 2>/dev/null
+ethtool -C $INTERFACE adaptive-rx on adaptive-tx on 2>/dev/null
+ethtool -C $INTERFACE rx-usecs 50 tx-usecs 50 2>/dev/null
+EOF
+
+sudo chmod +x /usr/local/bin/ethtool_persistent.sh
+
+sudo tee /etc/systemd/system/network-optimization.service > /dev/null << 'EOF'
+[Unit]
+Description=Network Interface Optimization
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/ethtool_persistent.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable network-optimization.service
+sudo systemctl start network-optimization.service
+sudo systemctl status network-optimization.service --no-pager
+Deliverable 3.2: systemctl status network-optimization.service shows active (exited) and enabled, confirming the tuning persists after reboot.
+
+Task 4: Comprehensive Performance Testing and Analysis
+Subtask 4.1: Advanced iperf3 Testing with JSON Output
+cd ~/network_tuning_results
+
+cat > ~/comprehensive_test.sh << 'EOF'
+#!/bin/bash
+SERVER_IP="192.168.1.100"   # Replace with your server IP
+RESULTS_TXT="comprehensive_results.txt"
+RESULTS_JSON="comprehensive_results.json"
+
+echo "=== COMPREHENSIVE NETWORK PERFORMANCE TEST ===" > $RESULTS_TXT
+date >> $RESULTS_TXT
+
+echo "=== Test 1: Single Stream TCP Throughput ===" >> $RESULTS_TXT
+iperf3 -c $SERVER_IP -p 5001 -t 60 -i 10 >> $RESULTS_TXT
+
+# Primary JSON capture used for automated comparison in Subtask 4.2
+iperf3 -c $SERVER_IP -p 5001 -t 60 -J > $RESULTS_JSON
+
+echo "=== Test 2: Multiple Parallel Streams (4 streams) ===" >> $RESULTS_TXT
+iperf3 -c $SERVER_IP -p 5001 -t 60 -P 4 -i 10 >> $RESULTS_TXT
+
+for window in 64K 128K 256K 512K 1M 2M; do
+    echo "=== Test 3: TCP with ${window} window size ===" >> $RESULTS_TXT
+    iperf3 -c $SERVER_IP -p 5001 -t 30 -w $window >> $RESULTS_TXT
+done
+
+for rate in 100M 500M 1G; do
+    echo "=== Test 4: UDP at ${rate} rate ===" >> $RESULTS_TXT
+    iperf3 -c $SERVER_IP -p 5001 -u -b $rate -t 30 >> $RESULTS_TXT
+done
+
+echo "=== Test 5: Bidirectional Test ===" >> $RESULTS_TXT
+iperf3 -c $SERVER_IP -p 5001 -t 30 --bidir >> $RESULTS_TXT
+
+echo "=== Test 6: Reverse Mode Test ===" >> $RESULTS_TXT
+iperf3 -c $SERVER_IP -p 5001 -t 30 -R >> $RESULTS_TXT
+
+echo "Comprehensive testing completed. Results saved to $RESULTS_TXT and $RESULTS_JSON"
+EOF
+
+chmod +x ~/comprehensive_test.sh
+~/comprehensive_test.sh
+Deliverable 4.1: comprehensive_results.json exists and jq '.end.sum_received.bits_per_second' comprehensive_results.json prints a numeric value without errors.
+
+Subtask 4.2: Reliable Performance Comparison Using JSON
+Rather than parsing human-readable text with fragile grep/awk, use iperf3 -J and jq for a deterministic, reproducible comparison.
+
+cat > ~/performance_comparison.sh << 'EOF'
+#!/bin/bash
+COMPARISON_FILE="performance_comparison.txt"
+
+echo "=== NETWORK PERFORMANCE COMPARISON REPORT ===" > $COMPARISON_FILE
+echo "Generated: $(date)" >> $COMPARISON_FILE
+echo "" >> $COMPARISON_FILE
+
+get_throughput_bps() {
+    local json_file=$1
+    if [ -f "$json_file" ]; then
+        jq -r '.end.sum_received.bits_per_second // empty' "$json_file"
+    fi
+}
+
+BASELINE_BPS=$(get_throughput_bps "baseline_results.json")
+TCP_OPT_BPS=$(get_throughput_bps "tcp_optimized_results.json")
+FINAL_BPS=$(get_throughput_bps "comprehensive_results.json")
+
+echo "=== Raw Throughput (bits per second) ===" >> $COMPARISON_FILE
+echo "Baseline:        ${BASELINE_BPS:-N/A}" >> $COMPARISON_FILE
+echo "TCP Optimized:   ${TCP_OPT_BPS:-N/A}" >> $COMPARISON_FILE
+echo "Fully Optimized: ${FINAL_BPS:-N/A}" >> $COMPARISON_FILE
+echo "" >> $COMPARISON_FILE
+
+echo "=== Converted to Mbps ===" >> $COMPARISON_FILE
+if [ -n "$BASELINE_BPS" ]; then
+    echo "Baseline:        $(echo "scale=2; $BASELINE_BPS / 1000000" | bc) Mbps" >> $COMPARISON_FILE
+fi
+if [ -n "$TCP_OPT_BPS" ]; then
+    echo "TCP Optimized:   $(echo "scale=2; $TCP_OPT_BPS / 1000000" | bc) Mbps" >> $COMPARISON_FILE
+fi
+if [ -n "$FINAL_BPS" ]; then
+    echo "Fully Optimized: $(echo "scale=2; $FINAL_BPS / 1000000" | bc) Mbps" >> $COMPARISON_FILE
+fi
+echo "" >> $COMPARISON_FILE
+
+echo "=== PERFORMANCE IMPROVEMENT ANALYSIS ===" >> $COMPARISON_FILE
+if [ -n "$BASELINE_BPS" ] && [ -n "$FINAL_BPS" ] && [ "$BASELINE_BPS" != "0" ]; then
+    IMPROVEMENT=$(echo "scale=2; (($FINAL_BPS - $BASELINE_BPS) / $BASELINE_BPS) * 100" | bc)
+    echo "Performance Improvement: ${IMPROVEMENT}%" >> $COMPARISON_FILE
+else
+    echo "Unable to calculate improvement percentage: missing or zero baseline JSON data." >> $COMPARISON_FILE
+    echo "Check that baseline_results.json and comprehensive_results.json both exist" >> $COMPARISON_FILE
+    echo "and contain a .end.sum_received.bits_per_second field (run: jq . <file> to inspect)." >> $COMPARISON_FILE
+fi
+echo "" >> $COMPARISON_FILE
+
+echo "=== APPLIED OPTIMIZATIONS SUMMARY ===" >> $COMPARISON_FILE
+echo "1. TCP Buffer Sizes:" >> $COMPARISON_FILE
+sysctl net.ipv4.tcp_rmem >> $COMPARISON_FILE
+sysctl net.ipv4.tcp_wmem >> $COMPARISON_FILE
+echo "" >> $COMPARISON_FILE
+
+echo "2. Network Interface Ring Buffers:" >> $COMPARISON_FILE
+INTERFACE=$(ip route | grep default | awk '{print $5}' | head -1)
+echo "Interface: $INTERFACE" >> $COMPARISON_FILE
+ethtool -g $INTERFACE >> $COMPARISON_FILE
+echo "" >> $COMPARISON_FILE
+
+echo "3. Offload Features:" >> $COMPARISON_FILE
+ethtool -k $INTERFACE | grep -E "(tcp-segmentation-offload|generic-segmentation-offload|generic-receive-offload)" >> $COMPARISON_FILE
+
+echo "Performance comparison completed. Report saved to $COMPARISON_FILE"
+EOF
+
+chmod +x ~/performance_comparison.sh
+~/performance_comparison.sh
+cat ~/network_tuning_results/performance_comparison.txt
+Expected output format: The JSON field .end.sum_received.bits_per_second is always present in standard iperf3 JSON output (iperf3 3.1+), so this method is more reliable than text scraping. A healthy result looks like:
+
+=== Raw Throughput (bits per second) ===
+Baseline:        941230000
+TCP Optimized:   943850000
+Fully Optimized: 945120000
+
+=== PERFORMANCE IMPROVEMENT ANALYSIS ===
+Performance Improvement: .41%
+On a already-saturated 1 Gbps link, single-digit or fractional percentage improvements are expected and correct â�� the buffer/offload tuning mainly helps on higher-bandwidth or higher-latency (high BDP) links, multi-stream workloads, and CPU-bound scenarios, not on an already near-line-rate single stream.
+
+Deliverable 4.2: performance_comparison.txt contains non-empty numeric throughput values for all three stages and a calculated (not "Unable to calculate") improvement percentage.
+
+Subtask 4.3: System Resource and Latency Monitoring
+cat > ~/monitor_performance.sh << 'EOF'
+#!/bin/bash
+MONITOR_FILE="system_monitoring.txt"
+DURATION=60
+SERVER_IP="192.168.1.100"   # Replace with your server IP
+
+echo "=== SYSTEM PERFORMANCE MONITORING ===" > $MONITOR_FILE
+echo "Monitor Duration: ${DURATION} seconds" >> $MONITOR_FILE
+date >> $MONITOR_FILE
+
+(
+    echo "=== CPU Usage ===" >> $MONITOR_FILE
+    sar -u 5 $((DURATION/5)) >> $MONITOR_FILE
+    echo "=== Network Interface Statistics ===" >> $MONITOR_FILE
+    sar -n DEV 5 $((DURATION/5)) >> $MONITOR_FILE
+    echo "=== Network Error Statistics ===" >> $MONITOR_FILE
+    sar -n EDEV 5 $((DURATION/5)) >> $MONITOR_FILE
+) &
+MONITOR_PID=$!
+
+iperf3 -c $SERVER_IP -p 5001 -t $DURATION -P 4
+
+wait $MONITOR_PID
+echo "Monitoring completed. Results saved to $MONITOR_FILE"
+EOF
+
+chmod +x ~/monitor_performance.sh
+~/monitor_performance.sh
+Deliverable 4.3: system_monitoring.txt contains CPU, DEV, and EDEV sections from sar with no rxerr/s or txerr/s values greater than zero during the test (if errors are present, note them for the troubleshooting section).
+
+Expected Outcomes
+A documented, reproducible set of baseline and post-tuning iperf3 results (in both text and JSON) stored under ~/network_tuning_results
+Confirmed sysctl values (rmem_max, wmem_max, tcp_rmem, tcp_wmem, tcp_congestion_control) persisted via /etc/sysctl.d/99-network-performance.conf
+A persistent network-optimization.service systemd unit that reapplies ethtool ring buffer, offload, and coalescing settings on every boot
+A performance_comparison.txt report with a numeric, JSON-derived throughput improvement percentage rather than an "Unable to calculate" placeholder
+Troubleshooting
+Issue 1: Permission Denied Errors
+
+If sysctl -p or ethtool -G/-K/-C fail with permission errors, confirm you are running them with sudo and that the parameter is not marked read-only inside a container (cat /proc/version and check if you are in a container with systemd-detect-virt). Investigate: does the restriction come from the kernel, from a container runtime's seccomp/capability restrictions, or from a cloud provider's virtual NIC driver not exposing that control at all?
+
+Issue 2: ethtool Settings Not Supported / Have No Effect
+
+If ethtool -G or -C silently report "not supported" or the "Current hardware settings" never change after applying them, check ethtool -i $INTERFACE for the driver name (e.g., virtio_net, vmxnet3, ena) and research whether that specific virtual NIC driver implements ring buffer or coalescing configuration at all. Ask yourself: is this a genuine kernel/driver limitation, or did the command run before the interface was fully up?
+
+Issue 3: iperf3 Connection Issues
+
+If the client cannot connect to the server, work through the following diagnostic questions rather than assuming the fix: Is the iperf3 server process actually listening on the expected port (ss -tlnp | grep 5001 on the server)? Is a firewall (firewalld, ufw, or cloud security group rules) blocking port 5001 between the two machines? Does a basic ping $SERVER_IP succeed, ruling out full connectivity loss versus a port-specific block? If the server was started in the foreground and the SSH session closed, is the process still running, or does it need nohup iperf3 -s -p 5001 & / a systemd service to persist?
+
+Conclusion
+In this lab, you established a network performance baseline, systematically tuned TCP buffer sizes and NIC-level settings (ring buffers, offloads, and interrupt coalescing) using sysctl and ethtool, and made those changes persistent across reboots with a systemd service. You then measured the effect of each optimization using iperf3, switching from fragile text-scraping to JSON output parsed with jq for reliable, repeatable throughput comparisons. Along the way you learned that the size of a measurable improvement depends heavily on the bandwidth-delay product of the link being tested, and that tuning which looks negligible on a low-latency 1 Gbps LAN can be decisive on higher-latency or higher-bandwidth paths. Next steps for continued tuning include testing across a real WAN link with higher RTT to see the buffer optimizations produce a larger measurable gain, experimenting with alternative congestion control algorithms (cubic, bbr, reno) under packet loss, and integrating the JSON-based comparison script into a scheduled job so throughput regressions can be detected automatically over time.

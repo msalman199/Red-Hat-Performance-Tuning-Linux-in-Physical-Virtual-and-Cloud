@@ -1,0 +1,50 @@
+=== NETWORK PERFORMANCE COMPARISON REPORT ===
+Generated: Wed Oct 21 04:27:22 UTC 2026
+
+=== Raw Throughput (bits per second) ===
+Baseline:        0
+TCP Optimized:   0
+Fully Optimized: 0
+
+=== Converted to Mbps ===
+Baseline:        0 Mbps
+TCP Optimized:   0 Mbps
+Fully Optimized: 0 Mbps
+
+=== PERFORMANCE IMPROVEMENT ANALYSIS ===
+Unable to calculate improvement percentage: missing or zero baseline JSON data.
+Check that baseline_results.json and comprehensive_results.json both exist
+and contain a .end.sum_received.bits_per_second field (run: jq . <file> to inspect).
+
+=== APPLIED OPTIMIZATIONS SUMMARY ===
+1. TCP Buffer Sizes:
+net.ipv4.tcp_rmem = 4096	262144	33554432
+net.ipv4.tcp_wmem = 4096	262144	33554432
+
+2. Network Interface Ring Buffers:
+Interface: ens5
+Ring parameters for ens5:
+Pre-set maximums:
+RX:			16384
+RX Mini:		n/a
+RX Jumbo:		n/a
+TX:			1024
+TX push buff len:	0
+HDS thresh:		n/a
+Current hardware settings:
+RX:			16384
+RX Mini:		n/a
+RX Jumbo:		n/a
+TX:			1024
+RX Buf Len:		n/a
+CQE Size:		n/a
+TX Push:		off
+RX Push:		off
+TX push buff len:	0
+TCP data split:		n/a
+HDS thresh:		n/a
+
+3. Offload Features:
+tcp-segmentation-offload: off
+generic-segmentation-offload: on
+generic-receive-offload: on

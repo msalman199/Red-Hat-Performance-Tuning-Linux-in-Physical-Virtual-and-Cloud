@@ -1,0 +1,43 @@
+=== COMPREHENSIVE NETWORK PERFORMANCE TEST ===
+Wed Oct 21 04:24:18 UTC 2026
+=== Test 1: Single Stream TCP Throughput ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+=== Test 2: Multiple Parallel Streams (4 streams) ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[SUM]   0.00-0.00   sec  0.00 Bytes  0.00 bits/sec    0             sender
+[SUM]   0.00-0.00   sec  0.00 Bytes  0.00 bits/sec                  receiver
+=== Test 3: TCP with 64K window size ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+=== Test 3: TCP with 128K window size ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+=== Test 3: TCP with 256K window size ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+=== Test 3: TCP with 512K window size ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+=== Test 3: TCP with 1M window size ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+=== Test 3: TCP with 2M window size ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+=== Test 4: UDP at 100M rate ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+=== Test 4: UDP at 500M rate ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+=== Test 4: UDP at 1G rate ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+=== Test 5: Bidirectional Test ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID][Role] Interval           Transfer     Bitrate         Retr
+=== Test 6: Reverse Mode Test ===
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate
