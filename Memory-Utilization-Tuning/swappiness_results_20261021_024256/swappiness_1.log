@@ -1,0 +1,20 @@
+=== Swappiness 1 Test ===
+Start time: Wed Oct 21 02:43:01 UTC 2026
+Initial state:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       1.1Gi        14Gi        19Mi       360Mi        14Gi
+Swap:             0B          0B          0B
+
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 0  1      0 14732360    284 369540    0    0   380    99  251  253  4  2 92  1  0
+ 1  0      0 7910512    284 382820    0    0  2412     6 1191  600  3 15 74  8  0
+ 2  0      0 14681648    284 382800    0    0     0     4 1503  568 13 13 73  0  1
+ 1  0      0 12753252    284 382800    0    0     4     4 1370  483 21  4 74  0  1
+ 1  0      0 10841492    284 382800    0    0     0     0 1381  484 21  4 74  0  1
+
+Final state:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       1.1Gi        14Gi        19Mi       365Mi        14Gi
+Swap:             0B          0B          0B
+End time: Wed Oct 21 02:43:10 UTC 2026

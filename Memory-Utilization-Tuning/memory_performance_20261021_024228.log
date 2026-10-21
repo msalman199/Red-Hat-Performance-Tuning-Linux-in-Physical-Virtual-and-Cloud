@@ -1,0 +1,56 @@
+=== Baseline ===
+Timestamp: Wed Oct 21 02:42:28 UTC 2026
+Memory Usage:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       1.0Gi        13Gi        19Mi       969Mi        14Gi
+Swap:             0B          0B          0B
+vmstat snapshot:
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 0  0      0 14216080   4568 988148    0    0   403   105  236  257  3  2 94  1  0
+Swap activity:
+pswpin 0
+pswpout 0
+
+=== Stress Test - Sample 1 ===
+Timestamp: Wed Oct 21 02:42:33 UTC 2026
+Memory Usage:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       1.3Gi        13Gi        27Mi       977Mi        13Gi
+Swap:             0B          0B          0B
+vmstat snapshot:
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 2  0      0 13950084   4568 996680    0    0   399   104  241  256  3  2 93  1  0
+Swap activity:
+pswpin 0
+pswpout 0
+
+=== Stress Test - Sample 2 ===
+Timestamp: Wed Oct 21 02:42:38 UTC 2026
+Memory Usage:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       1.3Gi        13Gi        27Mi       977Mi        13Gi
+Swap:             0B          0B          0B
+vmstat snapshot:
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 3  0      0 13859140   4568 996680    0    0   395   103  245  255  4  2 93  1  0
+Swap activity:
+pswpin 0
+pswpout 0
+
+=== Stress Test - Sample 3 ===
+Timestamp: Wed Oct 21 02:42:43 UTC 2026
+Memory Usage:
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       1.2Gi        13Gi        27Mi       977Mi        14Gi
+Swap:             0B          0B          0B
+vmstat snapshot:
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 2  0      0 14004280   4568 996680    0    0   392   102  249  254  4  2 93  1  0
+Swap activity:
+pswpin 0
+pswpout 0
+
