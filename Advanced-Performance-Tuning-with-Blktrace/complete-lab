@@ -1,0 +1,352 @@
+Lab 15: Advanced Performance Tuning with Blktrace
+Objectives
+By the end of this lab, students will be able to:
+
+Install and configure blktrace and related tools for block I/O tracing
+Capture and analyze block layer I/O activity using blktrace and blkparse
+Interpret blktrace/blkparse output to identify performance bottlenecks
+Use btt (blktrace's companion tool) to generate queue and completion statistics
+Analyze I/O patterns, throughput, and latency metrics
+Configure I/O schedulers and tune kernel queue parameters for better performance
+Monitor the impact of tuning changes using before/after comparisons
+Prerequisites
+Before starting this lab, students should have:
+
+Basic understanding of Linux file systems and storage concepts
+Familiarity with command-line operations and text editors
+Knowledge of I/O concepts including throughput, latency, and IOPS
+Understanding of Linux kernel modules and system administration
+Experience with performance monitoring tools like iostat and iotop
+Root or sudo access to perform system-level configurations
+Install the required packages before beginning:
+
+For RHEL/CentOS systems:
+
+sudo yum update -y
+sudo yum install -y blktrace sysstat iotop
+For Ubuntu/Debian systems:
+
+sudo apt update
+sudo apt install -y blktrace sysstat iotop
+blktrace ships with two companion binaries used throughout this lab: blkparse (converts binary traces into readable text) and btt (aggregates parsed traces into queue/completion/latency statistics). Both are installed automatically with the blktrace package.
+
+Lab Environment Setup
+Ready-to-Use Cloud Machines: Al Nafi provides pre-configured Linux-based cloud machines for this lab. Simply click Start Lab to access your environment - no need to build your own VM or install an operating system.
+
+Your lab environment includes:
+
+CentOS/RHEL 8 or Ubuntu 20.04 LTS system
+Root access for system configuration
+Pre-installed development tools and utilities
+Multiple storage devices for testing scenarios
+Verify the installation and identify your primary block device before proceeding:
+
+# Check blktrace version
+blktrace -V
+
+# List available block devices
+lsblk
+
+# Mount debugfs if not already mounted (blktrace requires it)
+mount | grep debugfs || sudo mount -t debugfs debugfs /sys/kernel/debug
+
+# Identify the primary storage device
+PRIMARY_DEVICE=$(lsblk -d -o NAME --noheadings | head -1)
+echo "Primary device: $PRIMARY_DEVICE"
+
+# Check current I/O scheduler for the primary device
+cat /sys/block/$PRIMARY_DEVICE/queue/scheduler
+Create the working directory and test files used throughout the lab:
+
+sudo mkdir -p /opt/blktrace-lab
+sudo chown $USER:$USER /opt/blktrace-lab
+cd /opt/blktrace-lab
+
+# Create test files of different sizes
+dd if=/dev/zero of=test_1mb.dat bs=1M count=1
+dd if=/dev/zero of=test_10mb.dat bs=1M count=10
+dd if=/dev/zero of=test_100mb.dat bs=1M count=100
+Deliverable for setup: lsblk output showing at least one block device, and confirmation that /opt/blktrace-lab contains test_1mb.dat, test_10mb.dat, and test_100mb.dat (verify with ls -lh /opt/blktrace-lab).
+
+Task 1: Capture Block I/O Activity with Blktrace
+Subtask 1.1: Run a Basic Trace While Generating I/O
+Start a trace, generate I/O against the test files, and stop the trace cleanly.
+
+cd /opt/blktrace-lab
+
+# Start a basic trace in the background
+sudo blktrace -d /dev/$PRIMARY_DEVICE -o trace_basic &
+TRACE_PID=$!
+
+# Give the trace a moment to attach
+sleep 1
+
+# Generate I/O activity: sequential write, then sequential read
+dd if=/dev/zero of=/opt/blktrace-lab/trace_test.dat bs=1M count=50 conv=fsync
+dd if=/opt/blktrace-lab/trace_test.dat of=/dev/null bs=64k
+
+# Stop the trace
+sleep 1
+sudo kill -INT $TRACE_PID
+wait $TRACE_PID 2>/dev/null
+
+# List generated per-CPU trace files
+ls -la trace_basic.blktrace.*
+blktrace writes one binary file per CPU core (e.g. trace_basic.blktrace.0, trace_basic.blktrace.1, ...). This is expected and required by blkparse.
+
+Deliverable: output of ls -la trace_basic.blktrace.* showing one or more non-empty binary trace files (size greater than 0 bytes).
+
+Subtask 1.2: Parse the Trace into Human-Readable Format
+Convert the binary trace data with blkparse and inspect the event stream.
+
+cd /opt/blktrace-lab
+
+# Parse all per-CPU files belonging to the trace_basic run into a text file
+blkparse -i trace_basic -o trace_basic_parsed.txt
+
+echo "=== FIRST 20 PARSED EVENTS ==="
+head -20 trace_basic_parsed.txt
+
+echo "=== TOTAL PARSED LINES ==="
+wc -l trace_basic_parsed.txt
+
+echo "=== EVENT TYPE COUNTS (Q=queued, D=issued to driver, C=completed) ==="
+awk '{print $6}' trace_basic_parsed.txt | grep -E '^[A-Z]$' | sort | uniq -c | sort -rn
+
+echo "=== READ vs WRITE OPERATIONS ==="
+grep -c ' R ' trace_basic_parsed.txt
+grep -c ' W ' trace_basic_parsed.txt
+Each parsed line follows the format <major,minor> <cpu> <seqnum> <timestamp> <pid> <action> <rwbs> <sector> + <nr_sectors> [<process>]. The single-letter action code in field 6 (Q, G, I, D, C, etc.) identifies the stage of the request lifecycle; D marks dispatch to the driver and C marks completion, which is what latency calculations in Task 2 rely on.
+
+Deliverable: trace_basic_parsed.txt must exist and contain more than zero lines; the action-type count table must show at least one C (complete) entry, confirming that I/O completions were captured.
+
+Task 2: Generate Queue and Latency Statistics with btt
+blkparse shows raw events, but computing queue depth, dispatch latency, and completion latency by hand from raw text is error-prone. The correct tool for aggregate statistics is btt, which consumes the same binary trace files and produces a structured summary. (Note: blkparse itself has no -q/quiet statistics flag â�� the standard way to obtain queue/completion statistics is btt.)
+
+Subtask 2.1: Run a Realistic Mixed Workload Under Trace
+cd /opt/blktrace-lab
+
+# Start tracing with explicit action mask for queue, issue, and complete events
+sudo blktrace -d /dev/$PRIMARY_DEVICE -o trace_mixed -a queue -a issue -a complete &
+TRACE_PID=$!
+sleep 1
+
+# Sequential write
+dd if=/dev/zero of=/opt/blktrace-lab/mixed_write.dat bs=64k count=800 conv=fsync &
+WRITE_PID=$!
+
+# Sequential read
+dd if=/opt/blktrace-lab/test_100mb.dat of=/dev/null bs=64k &
+READ_PID=$!
+
+# Random small reads
+for i in $(seq 1 50); do
+    dd if=/opt/blktrace-lab/test_100mb.dat of=/dev/null bs=4k count=1 \
+       skip=$((RANDOM % 1000)) 2>/dev/null &
+done
+
+wait $WRITE_PID $READ_PID
+sleep 2
+
+sudo kill -INT $TRACE_PID
+wait $TRACE_PID 2>/dev/null
+
+rm -f /opt/blktrace-lab/mixed_write.dat
+
+ls -la trace_mixed.blktrace.*
+Deliverable: ls -la trace_mixed.blktrace.* shows non-empty per-CPU trace files for the trace_mixed run.
+
+Subtask 2.2: Parse and Aggregate with blkparse and btt
+cd /opt/blktrace-lab
+
+# Step 1: blkparse combines the per-CPU binary files into a single
+# text stream and (with -d) a binary "dump" file that btt can consume directly.
+blkparse -i trace_mixed -d trace_mixed.bin -o trace_mixed_parsed.txt
+
+echo "=== PARSED EVENT COUNT ==="
+wc -l trace_mixed_parsed.txt
+
+# Step 2: btt reads the combined binary dump and produces aggregate
+# queue-depth, dispatch-latency, and completion-latency statistics.
+btt -i trace_mixed.bin > btt_summary.txt 2>&1
+
+echo "=== BTT SUMMARY (Q2C = time from queue to completion) ==="
+cat btt_summary.txt
+Inspect btt_summary.txt. It contains several report sections; the most important for tuning decisions are:
+
+==================== All Devices ==================== with a table of Q2Q, Q2G, G2I, Q2M, I2D, D2C, and Q2C average times â�� these represent, respectively, time between queue events, queue-to-get-request, get-to-issue, queue-to-merge, issue-to-dispatch, dispatch-to-completion, and total queue-to-completion latency.
+Device Overhead showing what fraction of total latency is spent in each stage.
+A per-process or per-region breakdown depending on the options used.
+echo "=== EXTRACTING KEY LATENCY METRICS ==="
+grep -A 12 "All Devices" btt_summary.txt
+
+echo "=== EXTRACTING Q2C (TOTAL LATENCY) LINE ==="
+grep "Q2C" btt_summary.txt
+Deliverable: btt_summary.txt exists and is non-empty, contains an All Devices section, and includes at least one numeric Q2C average latency value (in seconds, e.g. 0.001234). This file is the concrete artifact used in Task 3 to justify tuning decisions.
+
+Task 3: Tune I/O Scheduler and Queue Parameters, Then Validate
+Subtask 3.1: Enumerate Available Schedulers Reliably
+The /sys/block/<dev>/queue/scheduler file lists available schedulers with the active one in square brackets, e.g. mq-deadline [kyber] bfq none. Parsing this reliably (rather than assuming tr '[]' always behaves the same across shells) is done with a portable sed/grep combination:
+
+cd /opt/blktrace-lab
+
+SCHED_FILE="/sys/block/$PRIMARY_DEVICE/queue/scheduler"
+
+echo "=== RAW SCHEDULER FILE CONTENTS ==="
+cat "$SCHED_FILE"
+
+echo "=== CURRENTLY ACTIVE SCHEDULER ==="
+grep -oP '(?<=\[)[^]]+(?=\])' "$SCHED_FILE" || \
+    sed -n 's/.*\[\([a-z-]*\)\].*/\1/p' "$SCHED_FILE"
+
+echo "=== ALL AVAILABLE SCHEDULERS (ONE PER LINE) ==="
+sed 's/\[//; s/\]//' "$SCHED_FILE" | tr ' ' '\n' | grep -v '^$' | tee available_schedulers.txt
+This produces available_schedulers.txt with one scheduler name per line (for example mq-deadline, kyber, bfq, none), regardless of which ones happen to be compiled in on this system. Every subsequent step reads from this file instead of assuming a fixed list, so the lab works correctly whether the kernel exposes two schedulers or five.
+
+Deliverable: available_schedulers.txt exists and contains at least one scheduler name matching one of the tokens originally printed in $SCHED_FILE.
+
+Subtask 3.2: Benchmark Every Available Scheduler
+cd /opt/blktrace-lab
+
+echo "device,scheduler,seq_read_MBps,seq_write_MBps" > scheduler_results.csv
+
+while read -r SCHED; do
+    [ -z "$SCHED" ] && continue
+    echo "--- Testing scheduler: $SCHED on $PRIMARY_DEVICE ---"
+
+    # Apply the scheduler; skip if the kernel rejects it
+    if ! echo "$SCHED" | sudo tee /sys/block/$PRIMARY_DEVICE/queue/scheduler >/dev/null 2>&1; then
+        echo "Scheduler $SCHED could not be applied, skipping."
+        continue
+    fi
+    sleep 1
+
+    # Drop caches so reads are measured from disk, not page cache
+    sync
+    echo 3 | sudo tee /proc/sys/vm/drop_caches >/dev/null 2>&1 || true
+
+    READ_OUT=$(dd if=/opt/blktrace-lab/test_100mb.dat of=/dev/null bs=64k 2>&1)
+    READ_MBPS=$(echo "$READ_OUT" | grep -oE '[0-9.]+ MB/s' | grep -oE '^[0-9.]+')
+    [ -z "$READ_MBPS" ] && READ_MBPS=$(echo "$READ_OUT" | grep -oE '[0-9.]+ GB/s' | grep -oE '^[0-9.]+' | awk '{print $1*1024}')
+
+    WRITE_OUT=$(dd if=/dev/zero of=/opt/blktrace-lab/sched_write.dat bs=64k count=1000 conv=fsync 2>&1)
+    WRITE_MBPS=$(echo "$WRITE_OUT" | grep -oE '[0-9.]+ MB/s' | grep -oE '^[0-9.]+')
+    [ -z "$WRITE_MBPS" ] && WRITE_MBPS=$(echo "$WRITE_OUT" | grep -oE '[0-9.]+ GB/s' | grep -oE '^[0-9.]+' | awk '{print $1*1024}')
+
+    rm -f /opt/blktrace-lab/sched_write.dat
+
+    echo "$PRIMARY_DEVICE,$SCHED,${READ_MBPS:-NA},${WRITE_MBPS:-NA}" >> scheduler_results.csv
+
+done < available_schedulers.txt
+
+echo "=== SCHEDULER BENCHMARK RESULTS ==="
+column -s, -t scheduler_results.csv
+Deliverable: scheduler_results.csv contains a header row plus one data row per scheduler listed in available_schedulers.txt, each with a device name, scheduler name, and numeric (or NA) throughput values. Displaying it with column -s, -t should render a readable table with no blank scheduler names.
+
+Subtask 3.3: Tune Queue Depth and Read-Ahead, Then Validate with btt
+Pick the best-performing scheduler from scheduler_results.csv and apply it, then tune nr_requests and read_ahead_kb.
+
+cd /opt/blktrace-lab
+
+# Example: apply mq-deadline (replace with your best-performing scheduler from Subtask 3.2)
+BEST_SCHED="mq-deadline"
+echo "$BEST_SCHED" | sudo tee /sys/block/$PRIMARY_DEVICE/queue/scheduler
+
+echo "device,nr_requests,read_ahead_kb,seq_read_MBps" > queue_tuning_results.csv
+
+for QD in 32 128 256; do
+    for RA in 128 512 2048; do
+        echo "$QD" | sudo tee /sys/block/$PRIMARY_DEVICE/queue/nr_requests >/dev/null
+        echo "$RA" | sudo tee /sys/block/$PRIMARY_DEVICE/queue/read_ahead_kb >/dev/null
+        sync
+        echo 3 | sudo tee /proc/sys/vm/drop_caches >/dev/null 2>&1 || true
+
+        OUT=$(dd if=/opt/blktrace-lab/test_100mb.dat of=/dev/null bs=64k 2>&1)
+        MBPS=$(echo "$OUT" | grep -oE '[0-9.]+ MB/s' | grep -oE '^[0-9.]+')
+        echo "$PRIMARY_DEVICE,$QD,$RA,${MBPS:-NA}" >> queue_tuning_results.csv
+    done
+done
+
+echo "=== QUEUE/READ-AHEAD TUNING RESULTS ==="
+column -s, -t queue_tuning_results.csv
+Apply the best combination found (replace 128 and 512 with your measured optimum), then re-run a trace and confirm the improvement with btt:
+
+BEST_QD=128
+BEST_RA=512
+echo "$BEST_QD" | sudo tee /sys/block/$PRIMARY_DEVICE/queue/nr_requests
+echo "$BEST_RA" | sudo tee /sys/block/$PRIMARY_DEVICE/queue/read_ahead_kb
+
+# Re-run the same mixed workload trace as Task 2 under the new configuration
+sudo blktrace -d /dev/$PRIMARY_DEVICE -o trace_tuned -a queue -a issue -a complete &
+TRACE_PID=$!
+sleep 1
+
+dd if=/dev/zero of=/opt/blktrace-lab/tuned_write.dat bs=64k count=800 conv=fsync &
+WPID=$!
+dd if=/opt/blktrace-lab/test_100mb.dat of=/dev/null bs=64k &
+RPID=$!
+for i in $(seq 1 50); do
+    dd if=/opt/blktrace-lab/test_100mb.dat of=/dev/null bs=4k count=1 \
+       skip=$((RANDOM % 1000)) 2>/dev/null &
+done
+wait $WPID $RPID
+sleep 2
+sudo kill -INT $TRACE_PID
+wait $TRACE_PID 2>/dev/null
+rm -f /opt/blktrace-lab/tuned_write.dat
+
+blkparse -i trace_tuned -d trace_tuned.bin -o trace_tuned_parsed.txt
+btt -i trace_tuned.bin > btt_summary_tuned.txt 2>&1
+
+echo "=== BASELINE Q2C (from Task 2) ==="
+grep "Q2C" btt_summary.txt
+
+echo "=== TUNED Q2C (after scheduler/queue changes) ==="
+grep "Q2C" btt_summary_tuned.txt
+Deliverable: two files, btt_summary.txt (baseline, from Task 2) and btt_summary_tuned.txt (post-tuning), both containing a Q2C average latency value. The student should record both numbers side by side; a successful tuning pass shows the tuned Q2C average latency equal to or lower than the baseline for the sequential-read-dominated workload, or documents a clear tradeoff if it did not improve (for example, higher throughput at the cost of slightly higher average latency under mixed load).
+
+Troubleshooting Tips
+Issue 1: Blktrace fails to start with "Permission denied" or "No such file or directory"
+
+# Confirm debugfs is mounted; blktrace requires it
+mount | grep debugfs
+sudo mount -t debugfs debugfs /sys/kernel/debug
+
+# Confirm the device path exists
+ls -la /dev/$PRIMARY_DEVICE
+Issue 2: blkparse reports "Invalid input file" or produces zero lines
+
+# Confirm the per-CPU trace files exist and are non-empty for the given prefix
+ls -la trace_basic.blktrace.*
+
+# blkparse needs the same -i prefix used with blktrace -o; verify no typo
+blkparse -i trace_basic -o /tmp/check.txt
+wc -l /tmp/check.txt
+Issue 3: btt reports "bno_read: Invalid device"
+
+This happens when btt is pointed at the wrong input. It must consume the binary dump file created by blkparse -d, not the raw per-CPU .blktrace.* files and not the parsed text output.
+
+# Regenerate the binary dump explicitly
+blkparse -i trace_mixed -d trace_mixed.bin -o /dev/null
+btt -i trace_mixed.bin
+Issue 4: High system load or excessive latency during trace capture
+
+If background dd processes from earlier subtasks are still running, they will inflate every subsequent measurement.
+
+# Check for stray dd or blktrace processes before starting a new test
+ps aux | grep -E 'dd |blktrace' | grep -v grep
+
+# Kill any leftovers
+pkill -f "dd if=/opt/blktrace-lab" 2>/dev/null
+sudo pkill blktrace 2>/dev/null
+
+# Confirm system load has settled before re-running a benchmark
+uptime
+If load remains high after cleanup, check for unrelated background jobs (backups, package updates, or other students' processes on a shared machine) with iotop -o and iostat -x 1 5 before repeating the trace, since contention from unrelated processes will invalidate the before/after comparison in Subtask 3.3.
+
+Expected Outcomes
+A complete set of blktrace binary traces, blkparse text output, and btt aggregate statistics files (btt_summary.txt, btt_summary_tuned.txt) demonstrating the full I/O tracing and analysis pipeline
+A scheduler_results.csv and queue_tuning_results.csv showing measured throughput across every scheduler and queue/read-ahead combination available on the lab device
+A documented before/after comparison of Q2C latency showing the measurable effect of scheduler and queue-parameter tuning on the same workload
+Conclusion
+In this lab, students built a complete block I/O performance analysis workflow using blktrace, blkparse, and btt, moving from raw binary trace capture through parsed event inspection to aggregate queue and completion latency statistics. Rather than relying on non-existent blkparse flags or hardcoded scheduler lists, the lab used the correct tool for aggregate statistics (btt) and a portable scheduler-discovery method that adapts to whatever schedulers a given kernel actually exposes. By benchmarking every available I/O scheduler and sweeping queue depth and read-ahead settings against a consistent mixed workload, students produced concrete, comparable CSV and btt-summary artifacts that quantify the real impact of each tuning decision rather than relying on guesswork. Going forward, students should apply this same trace-measure-tune-reverify cycle against production-representative workloads, validate changes with fio for more rigorous synthetic benchmarking, and make any beneficial scheduler or queue settings persistent through udev rules or systemd services before relying on them in a live environment.
