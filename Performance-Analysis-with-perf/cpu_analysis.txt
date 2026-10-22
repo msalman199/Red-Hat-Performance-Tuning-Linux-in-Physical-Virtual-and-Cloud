@@ -1,0 +1,27 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 12K of event 'task-clock:uppp'
+# Event count (approx.): 3226000000
+#
+# Children      Self  Command        Shared Object  Symbol                    
+# ........  ........  .............  .............  ..........................
+#
+    99.99%    99.99%  cpu_intensive  cpu_intensive  [.] main
+            |
+            ---__libc_start_call_main
+               main
+
+    99.99%     0.00%  cpu_intensive  libc.so.6      [.] __libc_start_call_main
+            |
+            ---__libc_start_call_main
+               main
+
+     0.01%     0.01%  cpu_intensive  libc.so.6      [.] __GI___libc_write
+
+
+#
+# (Tip: To add Node.js USDT(User-Level Statically Defined Tracing): perf buildid-cache --add `which node`)
+#
