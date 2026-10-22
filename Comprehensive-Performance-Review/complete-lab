@@ -1,0 +1,585 @@
+Lab 20: Comprehensive Performance Review
+Objectives
+By the end of this lab, students will be able to:
+
+Perform comprehensive system performance analysis using multiple monitoring tools simultaneously
+Identify performance bottlenecks across CPU, memory, disk I/O, and network resources
+Apply appropriate system tuning techniques based on performance analysis results
+Document performance changes and validate optimization effectiveness through before/after comparison
+Make data-driven decisions for system optimization in production environments
+Prerequisites
+Before starting this lab, students should have:
+
+Basic Linux command-line proficiency including file navigation and text editing
+Understanding of system resources (CPU, memory, disk I/O, processes)
+Familiarity with performance monitoring concepts (top, vmstat, iostat, sar)
+Basic shell scripting experience and comfort with command piping
+Root or sudo privileges on the lab machine
+Install the required monitoring packages before starting. On CentOS/RHEL:
+
+sudo yum install -y sysstat procps-ng util-linux bc iperf3
+On Ubuntu/Debian:
+
+sudo apt update
+sudo apt install -y sysstat procps bc iperf3
+sysstat provides iostat and sar. bc is required for the floating-point comparisons used in the bottleneck-detection scripts.
+
+Lab Environment Setup
+Al Nafi Cloud Machines: This lab uses Al Nafi's pre-configured Linux cloud machines. Simply click Start Lab to access your dedicated environment - no VM setup required. Your machine comes with all necessary tools pre-installed (verify with the prerequisite install commands above if any tool is missing).
+
+System Specifications:
+
+CentOS/RHEL 8+ or Ubuntu 20.04+ Linux distribution
+Minimum 4GB RAM and 2 CPU cores
+Root/sudo access enabled
+Performance monitoring tools installed per the Prerequisites section
+Task 1: Baseline Monitoring and Load Generation
+Subtask 1.1: Initialize the Monitoring Workspace
+Step 1: Create a dedicated workspace with subdirectories for each phase of the review.
+
+sudo mkdir -p /opt/performance-review
+sudo chown -R $USER:$USER /opt/performance-review
+cd /opt/performance-review
+
+mkdir -p baseline monitoring reports scripts post_tuning
+Step 2: Confirm the required tools are present.
+
+for tool in top iostat sar vmstat free df factor dd bc; do
+    if command -v $tool >/dev/null 2>&1; then
+        echo "OK: $tool found"
+    else
+        echo "MISSING: $tool - install before continuing"
+    fi
+done
+Step 3: Record a system information baseline.
+
+cat > baseline/system_info.txt << EOF
+System Performance Review - $(date)
+=====================================
+Hostname: $(hostname)
+Kernel: $(uname -r)
+CPU Info: $(lscpu | grep "Model name" | cut -d: -f2 | xargs)
+CPU Cores: $(nproc)
+Memory: $(free -h | grep Mem | awk '{print $2}')
+Disk Space: $(df -h / | tail -1 | awk '{print $2}')
+Uptime: $(uptime)
+EOF
+
+cat baseline/system_info.txt
+Deliverable for Subtask 1.1: A populated baseline/system_info.txt file. Expected output is a text block showing hostname, kernel version, CPU model, core count, memory size, disk size, and current uptime/load average.
+
+Subtask 1.2: Run Baseline Monitoring While Generating Load
+Rather than monitoring an idle system, this subtask captures a controlled monitoring window while a stress workload runs concurrently, so the collected data reflects real contention on CPU, memory, and disk.
+
+Step 1: Create the monitoring script. It runs for a fixed duration and captures top, iostat, sar, vmstat, and a manual memory sampling loop, all writing into a timestamped directory.
+
+cat > scripts/performance_monitor.sh << 'EOF'
+#!/bin/bash
+
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+MONITOR_DIR="/opt/performance-review/monitoring/${TIMESTAMP}"
+DURATION=120   # seconds; kept short for lab time budget
+SAMPLE_INTERVAL=2
+SAMPLES=$((DURATION / SAMPLE_INTERVAL))
+
+mkdir -p "$MONITOR_DIR"
+cd "$MONITOR_DIR" || exit 1
+
+echo "Starting monitoring run: $TIMESTAMP"
+echo "Duration: ${DURATION}s, samples: ${SAMPLES}"
+
+top -b -d "$SAMPLE_INTERVAL" -n "$SAMPLES" > top_output.txt &
+TOP_PID=$!
+
+iostat -x "$SAMPLE_INTERVAL" "$SAMPLES" > iostat_output.txt &
+IOSTAT_PID=$!
+
+sar -u -r -d "$SAMPLE_INTERVAL" "$SAMPLES" > sar_output.txt &
+SAR_PID=$!
+
+vmstat "$SAMPLE_INTERVAL" "$SAMPLES" > vmstat_output.txt &
+VMSTAT_PID=$!
+
+: > memory_tracking.txt
+remaining=$DURATION
+while [ "$remaining" -gt 0 ]; do
+    echo "$(date +%s) $(free -m | awk '/Mem:/ {print $2, $3}')" >> memory_tracking.txt
+    sleep "$SAMPLE_INTERVAL"
+    remaining=$((remaining - SAMPLE_INTERVAL))
+done &
+MEM_PID=$!
+
+echo "$TOP_PID $IOSTAT_PID $SAR_PID $VMSTAT_PID $MEM_PID" > monitor_pids.txt
+
+wait $TOP_PID $IOSTAT_PID $SAR_PID $VMSTAT_PID $MEM_PID 2>/dev/null
+
+echo "Monitoring complete. Data stored in: $MONITOR_DIR"
+echo "$MONITOR_DIR" > /opt/performance-review/monitoring/LATEST
+EOF
+
+chmod +x scripts/performance_monitor.sh
+Step 2: Create a combined stress workload that exercises CPU and disk I/O at the same time.
+
+cat > scripts/generate_load.sh << 'EOF'
+#!/bin/bash
+
+echo "Generating combined CPU and I/O load for 120 seconds..."
+
+# CPU load: two background workers computing prime factors in a loop
+stress_cpu() {
+    local end_time=$(( $(date +%s) + 120 ))
+    while [ "$(date +%s)" -lt "$end_time" ]; do
+        for i in $(seq 1 2000); do
+            factor "$i" > /dev/null 2>&1
+        done
+    done
+}
+stress_cpu &
+stress_cpu &
+
+# I/O load: write and read files under /tmp
+mkdir -p /tmp/io_test
+(
+    for i in 1 2 3; do
+        dd if=/dev/zero of=/tmp/io_test/testfile_${i}.dat bs=1M count=80 2>/dev/null
+    done
+    sleep 30
+    for i in 1 2 3; do
+        dd if=/tmp/io_test/testfile_${i}.dat of=/dev/null bs=1M 2>/dev/null
+    done
+    rm -f /tmp/io_test/testfile_*.dat
+) &
+
+wait
+echo "Load generation complete."
+EOF
+
+chmod +x scripts/generate_load.sh
+Step 3: Launch the load generator in the background, then immediately run the monitor in the foreground so both cover the same 120-second window.
+
+./scripts/generate_load.sh &
+./scripts/performance_monitor.sh
+Deliverable for Subtask 1.2: A new directory under monitoring/<timestamp>/ containing top_output.txt, iostat_output.txt, sar_output.txt, vmstat_output.txt, and memory_tracking.txt, all with non-zero size. Confirm with:
+
+ls -lh "$(cat /opt/performance-review/monitoring/LATEST)"
+Expected output: five files listed, each larger than 0 bytes, timestamped within the last few minutes.
+
+Task 2: Bottleneck Analysis and Tuning Recommendations
+Subtask 2.1: Analyze the Collected Data and Detect Bottlenecks
+Step 1: Create an analysis script that summarizes CPU, memory, and disk I/O from the monitoring run and flags values above defined thresholds.
+
+cat > scripts/analyze_performance.sh << 'EOF'
+#!/bin/bash
+
+DATA_DIR=$(cat /opt/performance-review/monitoring/LATEST 2>/dev/null)
+REPORT_DIR="/opt/performance-review/reports"
+mkdir -p "$REPORT_DIR"
+
+if [ -z "$DATA_DIR" ] || [ ! -d "$DATA_DIR" ]; then
+    echo "Error: no monitoring data found. Run performance_monitor.sh first."
+    exit 1
+fi
+
+REPORT_FILE="${REPORT_DIR}/performance_analysis_$(date +%Y%m%d_%H%M%S).txt"
+
+{
+echo "Performance Analysis Report - $(date)"
+echo "========================================="
+echo "Source data: $DATA_DIR"
+echo ""
+
+echo "CPU USAGE ANALYSIS"
+echo "-------------------"
+if [ -f "${DATA_DIR}/top_output.txt" ]; then
+    grep "Cpu(s)" "${DATA_DIR}/top_output.txt" | \
+        sed -E 's/.*, *([0-9.]+)%? *id.*/\1/' | \
+        awk '{idle+=$1; count++} END {
+            if (count > 0) {
+                avg_idle = idle/count
+                avg_busy = 100 - avg_idle
+                printf "Average CPU busy: %.2f%%\n", avg_busy
+            } else {
+                print "No CPU samples parsed."
+            }
+        }'
+else
+    echo "top_output.txt not found."
+fi
+echo ""
+
+echo "MEMORY USAGE ANALYSIS"
+echo "----------------------"
+if [ -f "${DATA_DIR}/memory_tracking.txt" ]; then
+    awk '{total+=$2; used+=$3; count++} END {
+        if (count > 0) {
+            pct = (used/total)*100
+            printf "Average Memory Usage: %.0f MB / %.0f MB (%.1f%%)\n", used/count, total/count, pct
+        } else {
+            print "No memory samples parsed."
+        }
+    }' "${DATA_DIR}/memory_tracking.txt"
+else
+    echo "memory_tracking.txt not found."
+fi
+echo ""
+
+echo "DISK I/O ANALYSIS"
+echo "------------------"
+if [ -f "${DATA_DIR}/iostat_output.txt" ]; then
+    grep -E "^[a-zA-Z]" "${DATA_DIR}/iostat_output.txt" | grep -Ev "Device|avg-cpu" | \
+        awk '{if (NF >= 14) {util += $NF; count++}} END {
+            if (count > 0) printf "Average Disk Utilization: %.2f%%\n", util/count
+            else print "No iostat device samples parsed."
+        }'
+else
+    echo "iostat_output.txt not found."
+fi
+echo ""
+
+echo "THRESHOLD-BASED FINDINGS"
+echo "-------------------------"
+} > "$REPORT_FILE"
+
+cpu_busy=$(grep "Cpu(s)" "${DATA_DIR}/top_output.txt" 2>/dev/null | \
+    sed -E 's/.*, *([0-9.]+)%? *id.*/\1/' | \
+    awk '{idle+=$1; count++} END {if (count>0) printf "%.1f", 100-(idle/count); else print "0"}')
+
+mem_pct=$(awk '{total+=$2; used+=$3; count++} END {
+    if (count>0) printf "%.1f", (used/total)*100; else print "0"
+}' "${DATA_DIR}/memory_tracking.txt" 2>/dev/null)
+
+if [ -z "$cpu_busy" ]; then cpu_busy=0; fi
+if [ -z "$mem_pct" ]; then mem_pct=0; fi
+
+{
+if (( $(echo "$cpu_busy > 70" | bc -l) )); then
+    echo "FINDING: High CPU utilization (${cpu_busy}%) - candidate for CPU tuning."
+else
+    echo "CPU utilization normal (${cpu_busy}%)."
+fi
+
+if (( $(echo "$mem_pct > 80" | bc -l) )); then
+    echo "FINDING: High memory utilization (${mem_pct}%) - candidate for memory/swappiness tuning."
+else
+    echo "Memory utilization normal (${mem_pct}%)."
+fi
+} >> "$REPORT_FILE"
+
+echo "Analysis written to: $REPORT_FILE"
+cat "$REPORT_FILE"
+EOF
+
+chmod +x scripts/analyze_performance.sh
+./scripts/analyze_performance.sh
+Expected output: A report printed to the terminal and saved under reports/, containing an "Average CPU busy" percentage, an "Average Memory Usage" line, an "Average Disk Utilization" line, and two FINDING/normal lines under "THRESHOLD-BASED FINDINGS".
+
+Step 2: Inspect current kernel tunables that affect the resources flagged above.
+
+cat > scripts/current_tunables.sh << 'EOF'
+#!/bin/bash
+
+echo "CURRENT SYSTEM TUNABLE VALUES"
+echo "==============================="
+echo "vm.swappiness: $(cat /proc/sys/vm/swappiness)"
+echo "vm.dirty_ratio: $(cat /proc/sys/vm/dirty_ratio)"
+echo "vm.dirty_background_ratio: $(cat /proc/sys/vm/dirty_background_ratio)"
+echo "net.core.rmem_max: $(cat /proc/sys/net/core/rmem_max)"
+echo "net.core.wmem_max: $(cat /proc/sys/net/core/wmem_max)"
+echo "net.ipv4.tcp_window_scaling: $(cat /proc/sys/net/ipv4/tcp_window_scaling)"
+
+for disk in $(lsblk -d -n -o NAME 2>/dev/null | grep -E '^[a-z]+$'); do
+    if [ -f "/sys/block/$disk/queue/scheduler" ]; then
+        echo "I/O scheduler for $disk: $(cat /sys/block/$disk/queue/scheduler)"
+    fi
+done
+EOF
+
+chmod +x scripts/current_tunables.sh
+./scripts/current_tunables.sh
+Deliverable for Subtask 2.1: The saved analysis report file in reports/ and the terminal output of current_tunables.sh. A student should be able to name at least one resource (CPU, memory, or disk) that was under measurable load during the test, using the FINDING lines as evidence.
+
+Task 3: Apply, Verify, and Compare Tuning
+Subtask 3.1: Apply Targeted Tuning Based on Findings
+Step 1: Create the tuning script. It backs up current values, applies memory and I/O tuning appropriate for a general-purpose server workload, and writes a persistent sysctl configuration file.
+
+cat > scripts/apply_tuning.sh << 'EOF'
+#!/bin/bash
+
+if [ "$EUID" -ne 0 ]; then
+    echo "This script requires root privileges. Re-run with sudo."
+    exit 1
+fi
+
+BACKUP_DIR="/opt/performance-review/backup_$(date +%Y%m%d_%H%M%S)"
+mkdir -p "$BACKUP_DIR"
+
+echo "Backing up current tunables to $BACKUP_DIR"
+cat /proc/sys/vm/swappiness > "$BACKUP_DIR/swappiness.bak"
+cat /proc/sys/vm/dirty_ratio > "$BACKUP_DIR/dirty_ratio.bak"
+cat /proc/sys/vm/dirty_background_ratio > "$BACKUP_DIR/dirty_background_ratio.bak"
+cat /proc/sys/net/core/rmem_max > "$BACKUP_DIR/rmem_max.bak"
+cat /proc/sys/net/core/wmem_max > "$BACKUP_DIR/wmem_max.bak"
+
+echo "Applying memory tuning..."
+echo 10 > /proc/sys/vm/swappiness
+echo 15 > /proc/sys/vm/dirty_ratio
+echo 5 > /proc/sys/vm/dirty_background_ratio
+echo "vm.swappiness set to 10, dirty_ratio to 15, dirty_background_ratio to 5"
+
+echo "Applying I/O scheduler tuning..."
+for disk in $(lsblk -d -n -o NAME | grep -E '^[a-z]+$'); do
+    if [ -f "/sys/block/$disk/queue/scheduler" ]; then
+        rotational=$(cat "/sys/block/$disk/queue/rotational")
+        if [ "$rotational" = "0" ]; then
+            echo none > "/sys/block/$disk/queue/scheduler" 2>/dev/null || \
+                echo mq-deadline > "/sys/block/$disk/queue/scheduler" 2>/dev/null
+            echo "Set $disk (SSD) scheduler to none/mq-deadline"
+        else
+            echo mq-deadline > "/sys/block/$disk/queue/scheduler" 2>/dev/null || \
+                echo cfq > "/sys/block/$disk/queue/scheduler" 2>/dev/null
+            echo "Set $disk (HDD) scheduler to mq-deadline/cfq"
+        fi
+    fi
+done
+
+echo "Applying network buffer tuning..."
+echo 16777216 > /proc/sys/net/core/rmem_max
+echo 16777216 > /proc/sys/net/core/wmem_max
+echo 1 > /proc/sys/net/ipv4/tcp_window_scaling
+echo "Network receive/send buffers set to 16 MB, window scaling enabled"
+
+cat > /etc/sysctl.d/99-performance-tuning.conf << SYSCTL_EOF
+# Performance tuning applied by Lab 20
+vm.swappiness = 10
+vm.dirty_ratio = 15
+vm.dirty_background_ratio = 5
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+net.ipv4.tcp_window_scaling = 1
+SYSCTL_EOF
+
+echo "Persistent configuration written to /etc/sysctl.d/99-performance-tuning.conf"
+echo ""
+echo "TUNING APPLIED. Verification:"
+echo "swappiness: $(cat /proc/sys/vm/swappiness)"
+echo "dirty_ratio: $(cat /proc/sys/vm/dirty_ratio)"
+echo "rmem_max: $(cat /proc/sys/net/core/rmem_max)"
+EOF
+
+chmod +x scripts/apply_tuning.sh
+sudo ./scripts/apply_tuning.sh
+Deliverable: Terminal output showing swappiness: 10, dirty_ratio: 15, and rmem_max: 16777216, plus a new file at /etc/sysctl.d/99-performance-tuning.conf. Confirm the file exists:
+
+cat /etc/sysctl.d/99-performance-tuning.conf
+Subtask 3.2: Re-run the Load Test, Then Compare Before and After
+Step 1: Re-run the same combined load and monitoring pair from Task 1, but store the results as the post-tuning run.
+
+cat > scripts/post_tuning_test.sh << 'EOF'
+#!/bin/bash
+
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+TEST_DIR="/opt/performance-review/post_tuning/${TIMESTAMP}"
+mkdir -p "$TEST_DIR"
+cd "$TEST_DIR" || exit 1
+
+echo "Post-tuning test starting: $TIMESTAMP"
+
+/opt/performance-review/scripts/generate_load.sh &
+
+DURATION=120
+SAMPLE_INTERVAL=2
+SAMPLES=$((DURATION / SAMPLE_INTERVAL))
+
+top -b -d "$SAMPLE_INTERVAL" -n "$SAMPLES" > top_output.txt &
+TOP_PID=$!
+iostat -x "$SAMPLE_INTERVAL" "$SAMPLES" > iostat_output.txt &
+IOSTAT_PID=$!
+
+: > memory_tracking.txt
+remaining=$DURATION
+while [ "$remaining" -gt 0 ]; do
+    echo "$(date +%s) $(free -m | awk '/Mem:/ {print $2, $3}')" >> memory_tracking.txt
+    sleep "$SAMPLE_INTERVAL"
+    remaining=$((remaining - SAMPLE_INTERVAL))
+done &
+MEM_PID=$!
+
+wait $TOP_PID $IOSTAT_PID $MEM_PID 2>/dev/null
+
+echo "$TEST_DIR" > /opt/performance-review/post_tuning/LATEST
+echo "Post-tuning test complete. Data in $TEST_DIR"
+EOF
+
+chmod +x scripts/post_tuning_test.sh
+./scripts/post_tuning_test.sh
+Step 2: Create the comparison script. This produces a single report with baseline and post-tuning metrics side by side, closing every heredoc it opens.
+
+cat > scripts/compare_performance.sh << 'EOF'
+#!/bin/bash
+
+echo "PERFORMANCE COMPARISON ANALYSIS"
+echo "================================="
+
+BASELINE_DIR=$(cat /opt/performance-review/monitoring/LATEST 2>/dev/null)
+POST_DIR=$(cat /opt/performance-review/post_tuning/LATEST 2>/dev/null)
+
+if [ -z "$BASELINE_DIR" ] || [ ! -d "$BASELINE_DIR" ]; then
+    echo "Error: baseline monitoring data not found. Run performance_monitor.sh first."
+    exit 1
+fi
+
+if [ -z "$POST_DIR" ] || [ ! -d "$POST_DIR" ]; then
+    echo "Error: post-tuning data not found. Run post_tuning_test.sh first."
+    exit 1
+fi
+
+echo "Baseline data:    $BASELINE_DIR"
+echo "Post-tuning data: $POST_DIR"
+echo ""
+
+REPORT_DIR="/opt/performance-review/reports"
+mkdir -p "$REPORT_DIR"
+COMPARISON_REPORT="${REPORT_DIR}/performance_comparison_$(date +%Y%m%d_%H%M%S).txt"
+
+calc_cpu_busy() {
+    local file="$1/top_output.txt"
+    if [ -f "$file" ]; then
+        grep "Cpu(s)" "$file" | sed -E 's/.*, *([0-9.]+)%? *id.*/\1/' | \
+            awk '{idle+=$1; count++} END {if (count>0) printf "%.2f", 100-(idle/count); else print "0.00"}'
+    else
+        echo "0.00"
+    fi
+}
+
+calc_mem_pct() {
+    local file="$1/memory_tracking.txt"
+    if [ -f "$file" ]; then
+        awk '{total+=$2; used+=$3; count++} END {
+            if (count>0) printf "%.2f", (used/total)*100; else print "0.00"
+        }' "$file"
+    else
+        echo "0.00"
+    fi
+}
+
+calc_disk_util() {
+    local file="$1/iostat_output.txt"
+    if [ -f "$file" ]; then
+        grep -E "^[a-zA-Z]" "$file" | grep -Ev "Device|avg-cpu" | \
+            awk '{if (NF >= 14) {util += $NF; count++}} END {
+                if (count>0) printf "%.2f", util/count; else print "0.00"
+            }'
+    else
+        echo "0.00"
+    fi
+}
+
+baseline_cpu=$(calc_cpu_busy "$BASELINE_DIR")
+post_cpu=$(calc_cpu_busy "$POST_DIR")
+baseline_mem=$(calc_mem_pct "$BASELINE_DIR")
+post_mem=$(calc_mem_pct "$POST_DIR")
+baseline_disk=$(calc_disk_util "$BASELINE_DIR")
+post_disk=$(calc_disk_util "$POST_DIR")
+
+cpu_delta=$(echo "$post_cpu - $baseline_cpu" | bc)
+mem_delta=$(echo "$post_mem - $baseline_mem" | bc)
+disk_delta=$(echo "$post_disk - $baseline_disk" | bc)
+
+cat > "$COMPARISON_REPORT" << REPORT_EOF
+PERFORMANCE COMPARISON REPORT
+==============================
+Generated: $(date)
+Baseline source:    $BASELINE_DIR
+Post-tuning source: $POST_DIR
+
+METRIC              BASELINE     POST-TUNING     DELTA
+------              --------     -----------     -----
+CPU Busy (%)        ${baseline_cpu}          ${post_cpu}            ${cpu_delta}
+Memory Used (%)     ${baseline_mem}          ${post_mem}            ${mem_delta}
+Disk Utilization(%) ${baseline_disk}          ${post_disk}            ${disk_delta}
+
+APPLIED TUNING PARAMETERS
+--------------------------
+vm.swappiness:              $(cat /proc/sys/vm/swappiness)
+vm.dirty_ratio:              $(cat /proc/sys/vm/dirty_ratio)
+vm.dirty_background_ratio:   $(cat /proc/sys/vm/dirty_background_ratio)
+net.core.rmem_max:           $(cat /proc/sys/net/core/rmem_max)
+net.core.wmem_max:           $(cat /proc/sys/net/core/wmem_max)
+
+INTERPRETATION NOTES
+---------------------
+A negative CPU or Disk Utilization delta indicates the post-tuning run used
+fewer resources to complete the same workload, suggesting the tuning was
+effective for this workload profile. A positive delta does not necessarily
+mean the tuning failed; it may indicate the load generator itself varied
+between runs, or that the workload is not sensitive to the parameters changed.
+Memory Used percentage is expected to stay roughly flat unless the workload
+itself is memory-bound, since swappiness affects when memory pressure
+triggers swapping, not how much memory a workload consumes.
+REPORT_EOF
+
+echo "Comparison report saved to: $COMPARISON_REPORT"
+echo ""
+cat "$COMPARISON_REPORT"
+EOF
+
+chmod +x scripts/compare_performance.sh
+./scripts/compare_performance.sh
+Deliverable for Subtask 3.2: A saved file under reports/performance_comparison_*.txt containing a populated METRIC/BASELINE/POST-TUNING/DELTA table with numeric values (not blank), the five applied tuning parameters, and the interpretation notes paragraph. Confirm the file was created and is non-empty:
+
+ls -lh /opt/performance-review/reports/performance_comparison_*.txt
+Expected output: at least one file listed with a size greater than zero.
+
+Subtask 3.3: Build a Final Summary Report
+Step 1: Combine the analysis and comparison reports into one final document, and add your own written interpretation.
+
+cat > scripts/build_summary.sh << 'EOF'
+#!/bin/bash
+
+REPORT_DIR="/opt/performance-review/reports"
+LATEST_ANALYSIS=$(ls -1t "$REPORT_DIR"/performance_analysis_*.txt 2>/dev/null | head -1)
+LATEST_COMPARISON=$(ls -1t "$REPORT_DIR"/performance_comparison_*.txt 2>/dev/null | head -1)
+FINAL_REPORT="$REPORT_DIR/FINAL_SUMMARY_$(date +%Y%m%d_%H%M%S).txt"
+
+if [ -z "$LATEST_ANALYSIS" ] || [ -z "$LATEST_COMPARISON" ]; then
+    echo "Error: run analyze_performance.sh and compare_performance.sh first."
+    exit 1
+fi
+
+{
+echo "LAB 20 FINAL PERFORMANCE REVIEW SUMMARY"
+echo "========================================"
+echo "Generated: $(date)"
+echo ""
+echo "----- BASELINE ANALYSIS -----"
+cat "$LATEST_ANALYSIS"
+echo ""
+echo "----- BEFORE/AFTER COMPARISON -----"
+cat "$LATEST_COMPARISON"
+echo ""
+echo "----- STUDENT WRITTEN INTERPRETATION -----"
+echo "(Edit this file manually to add: which resource was the primary"
+echo "bottleneck, which tuning parameter most likely explains the observed"
+echo "delta, and one additional tunable you would test next.)"
+} > "$FINAL_REPORT"
+
+echo "Final summary written to: $FINAL_REPORT"
+EOF
+
+chmod +x scripts/build_summary.sh
+./scripts/build_summary.sh
+Step 2: Open the final report and manually add your interpretation under the "STUDENT WRITTEN INTERPRETATION" heading, replacing the placeholder instructions with actual sentences based on the numbers in your own comparison table.
+
+nano "$(ls -1t /opt/performance-review/reports/FINAL_SUMMARY_*.txt | head -1)"
+Deliverable for Subtask 3.3: A FINAL_SUMMARY_*.txt file in reports/ that contains the baseline analysis, the before/after comparison table, and at least three sentences of original student-written interpretation identifying the bottleneck, the tuning parameter believed responsible for the change, and a proposed next tunable to test.
+
+Expected Outcomes
+A complete monitoring dataset in monitoring/ and post_tuning/ showing CPU, memory, and disk I/O behavior under identical synthetic load, before and after tuning
+A persistent sysctl configuration at /etc/sysctl.d/99-performance-tuning.conf that survives reboot
+A final summary report combining quantitative before/after metrics with the student's own written analysis of cause and effect
+Conclusion
+In this lab, students built a repeatable performance review workflow: establishing a system baseline, generating controlled CPU and disk load while collecting data from top, iostat, sar, and vmstat simultaneously, identifying bottlenecks against numeric thresholds, applying kernel-level tuning, and then re-running the identical workload to measure the effect of that tuning. The comparison report's delta column is the key artifact to interpret: a meaningfully negative delta in CPU busy or disk utilization after tuning indicates the change reduced resource consumption for the same work, while a delta near zero suggests the workload was not sensitive to the parameters adjusted, which is itself a valid and useful finding rather than a failure.
+
+Each tuning parameter has a specific use case. Lowering vm.swappiness is appropriate on systems with sufficient RAM where you want to avoid premature swapping under memory pressure, but it can be counterproductive on memory-constrained systems where some swapping prevents out-of-memory kills. Lowering dirty_ratio and dirty_background_ratio improves I/O latency consistency by flushing writes to disk more frequently, at the cost of slightly higher overall disk write volume and reduced write-buffering benefits for bursty workloads. Switching I/O schedulers matters most on spinning disks under mixed read/write load; on modern SSDs and NVMe devices the choice of scheduler has a much smaller effect and none/mq-deadline is usually already optimal. Increasing network buffer sizes benefits high-bandwidth or high-latency network paths but wastes memory on systems with light network usage. Students should be cautious with aggressive tuning in production: values copied from a lab environment without validating against the actual workload can degrade performance, and every change made in this lab was intentionally backed up and written as a reversible sysctl file specifically so it could be rolled back.
+
+As a next step, advanced students should extend compare_performance.sh to run multiple repetitions of each test and report a mean and standard deviation rather than a single sample, since single-run comparisons are vulnerable to noise from background processes. Students could also isolate each tunable independently, changing only swappiness in one run and only the I/O scheduler in another, to attribute performance changes to a single variable rather than a bundled set of changes.

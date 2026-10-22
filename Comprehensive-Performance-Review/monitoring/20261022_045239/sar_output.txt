@@ -1,0 +1,611 @@
+Linux 5.14.0-654.el9.x86_64 (ip-172-31-10-113.ec2.internal) 	10/22/26 	_x86_64_	(4 CPU)
+
+04:52:39        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:52:41        all     10.78      0.00     46.37      0.00      0.75     42.11
+
+04:52:39    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:52:41     13900160  14824136    729220      4.57      4568   1146660   4611692     28.92    947736    624316    245844
+
+04:52:39          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:52:41      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:52:41      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:52:41        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:52:43        all     10.06      0.00     42.64      0.00      1.38     45.91
+
+04:52:41    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:52:43     13928876  14852912    700308      4.39      4568   1146720   4589420     28.78    942444    624376    245904
+
+04:52:41          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:52:43      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:52:43      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:52:43        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:52:45        all     10.03      0.00     43.86      0.88      0.50     44.74
+
+04:52:43    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:52:45     13931448  14855540    698088      4.38      4568   1146776   4589344     28.78    942580    624432    188596
+
+04:52:43          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:52:45      nvme0n1    119.50      4.00  28682.00      0.00    240.05      0.28      2.31      5.70
+04:52:45      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:52:45        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:52:47        all      9.67      0.00     43.59      0.13      0.63     45.98
+
+04:52:45    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:52:47     13915244  14839428    713948      4.48      4568   1146852   4588816     28.78    942312    624508    188704
+
+04:52:45          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:52:47      nvme0n1      2.50     10.00     20.00      0.00     12.00      0.00      1.00      0.25
+04:52:47      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:52:47        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:52:49        all      9.48      0.00     43.62      0.00      0.51     46.40
+
+04:52:47    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:52:49     13925668  14849908    703264      4.41      4568   1146908   4588840     28.78    942420    624564    188760
+
+04:52:47          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:52:49      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:52:49      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:52:49        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:52:51        all      9.66      0.00     44.79      3.51      0.63     41.41
+
+04:52:49    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:52:51     13938908  14863208    690264      4.33      4568   1146968   4589704     28.78    942724    624624        56
+
+04:52:49          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:52:51      nvme0n1    370.50      0.00  94382.00      0.00    254.74      1.43      3.85     23.00
+04:52:51      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:52:51        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:52:53        all      9.80      0.00     43.97      0.00      0.50     45.73
+
+04:52:51    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:52:53     13937252  14861620    691860      4.34      4568   1147028   4589508     28.78    942368    624684       112
+
+04:52:51          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:52:53      nvme0n1     11.50      0.00    135.25      0.00     11.76      0.01      0.87      0.10
+04:52:53      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:52:53        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:52:55        all      9.70      0.00     43.58      0.00      0.76     45.97
+
+04:52:53    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:52:55     13933736  14858160    695052      4.36      4568   1147084   4589484     28.78    942704    624740       168
+
+04:52:53          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:52:55      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:52:55      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:52:55        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:52:57        all     10.16      0.00     43.16      0.00      0.75     45.92
+
+04:52:55    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:52:57     13934520  14859000    694016      4.35      4568   1147140   4589312     28.78    942672    624796       224
+
+04:52:55          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:52:57      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:52:57      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:52:57        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:52:59        all      9.90      0.00     43.98      0.00      0.50     45.61
+
+04:52:57    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:52:59     13952388  14876924    676536      4.24      4568   1147196   4590072     28.79    942508    624852       252
+
+04:52:57          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:52:59      nvme0n1      3.50      0.00     14.00      0.00      4.00      0.00      0.71      0.00
+04:52:59      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:52:59        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:01        all      8.96      0.00     44.19      0.00      0.88     45.96
+
+04:52:59    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:01     13965420  14890012    663268      4.16      4568   1147252   4589488     28.78    942608    624908       312
+
+04:52:59          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:01      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:01      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:01        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:03        all     10.09      0.00     42.12      0.00      1.64     46.15
+
+04:53:01    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:03     13959948  14884600    668480      4.19      4568   1147312   4589508     28.78    942304    624968       372
+
+04:53:01          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:03      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:03      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:03        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:05        all      9.50      0.00     43.50      0.00      1.38     45.62
+
+04:53:03    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:05     13948620  14873332    680160      4.27      4568   1147372   4588708     28.78    942480    625028       428
+
+04:53:03          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:05      nvme0n1      0.50      0.00      2.00      0.00      4.00      0.00      0.00      0.00
+04:53:05      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:05        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:07        all      9.15      0.00     43.11      0.13      1.75     45.86
+
+04:53:05    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:07     13929476  14854244    699120      4.38      4568   1147428   4589344     28.78    942412    625084       484
+
+04:53:05          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:07      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:07      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:07        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:09        all     10.38      0.00     42.50      0.12      1.38     45.62
+
+04:53:07    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:09     13932128  14856952    696224      4.37      4568   1147484   4589212     28.78    942472    625140       540
+
+04:53:07          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:09      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:09      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:09        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:11        all     10.11      0.00     43.95      0.00      1.87     44.07
+
+04:53:09    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:11     14190676  14869572    684136      4.29      4568    901780   4587872     28.77    942292    379436       596
+
+04:53:09          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:11      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:11      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:11        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:13        all      9.80      0.00     43.22      0.00      1.13     45.85
+
+04:53:11    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:13     14185200  14864152    689508      4.32      4568    901836   4588408     28.78    942376    379492       652
+
+04:53:11          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:13      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:13      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:13        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:15        all     10.59      0.00     43.25      0.13      0.25     45.78
+
+04:53:13    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:15     14193112  14872124    681312      4.27      4568    901896   4587544     28.77    942348    379552       712
+
+04:53:13          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:15      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:15      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:15        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:17        all     10.33      0.00     43.20      0.13      0.25     46.10
+
+04:53:15    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:17     14187612  14866684    686948      4.31      4568    901956   4588696     28.78    942132    379612       732
+
+04:53:15          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:17      nvme0n1      2.50      0.00     20.00      0.00      8.00      0.00      0.60      0.05
+04:53:17      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:17        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:19        all      9.64      0.00     41.30      0.00      3.38     45.68
+
+04:53:17    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:19     14208620  14887748    665980      4.18      4568    902012   4588568     28.78    942484    379668       804
+
+04:53:17          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:19      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:19      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:19        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:21        all      9.42      0.00     42.75      0.00      2.23     45.60
+
+04:53:19    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:21     14203064  14882248    671276      4.21      4568    902068   4588072     28.77    942128    379724       860
+
+04:53:19          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:21      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:21      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:21        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:23        all      9.63      0.00     43.47      0.00      0.89     46.01
+
+04:53:21    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:23     14205056  14884296    669028      4.20      4568    902124   4588096     28.77    941940    379780       916
+
+04:53:21          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:23      nvme0n1     18.50      0.00    191.75      0.00     10.36      0.01      0.76      0.10
+04:53:23      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:23        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:25        all     10.49      0.00     42.48      0.00      0.76     46.27
+
+04:53:23    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:25     14199308  14878608    675116      4.23      4568    902184   4588460     28.78    942124    379840       976
+
+04:53:23          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:25      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:25      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:25        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:27        all     10.14      0.00     43.30      0.00      1.00     45.56
+
+04:53:25    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:27     14210884  14890244    663396      4.16      4568    902244   4588480     28.78    942424    379900        24
+
+04:53:25          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:27      nvme0n1      2.50      0.00    506.00      0.00    202.40      0.01      2.20      0.15
+04:53:27      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:27        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:29        all     10.04      0.00     43.29      0.00      0.88     45.80
+
+04:53:27    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:29     14211160  14890576    662864      4.16      4568    902300   4587808     28.77    942180    379956        88
+
+04:53:27          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:29      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:29      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:29        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:31        all      9.89      0.00     43.22      0.25      0.51     46.13
+
+04:53:29    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:31     14212768  14892236    661400      4.15      4568    902352   4588696     28.78    942416    380008       140
+
+04:53:29          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:31      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:31      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:31        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:33        all      9.64      0.00     43.18      0.00      1.25     45.93
+
+04:53:31    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:33     14224372  14903896    649784      4.08      4568    902408   4588696     28.78    942148    380064       192
+
+04:53:31          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:33      nvme0n1      0.50      0.00      2.00      0.00      4.00      0.00      1.00      0.00
+04:53:33      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:33        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:35        all      9.94      0.00     43.65      0.00      0.88     45.53
+
+04:53:33    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:35     14214800  14894380    659036      4.13      4568    902464   4587684     28.77    942488    380120       248
+
+04:53:33          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:35      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:35      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:35        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:37        all      9.66      0.00     43.54      0.00      0.75     46.05
+
+04:53:35    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:37     14220716  14900356    652892      4.09      4568    902524   4588104     28.77    942364    380180       308
+
+04:53:35          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:37      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:37      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:37        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:39        all     10.40      0.00     43.36      0.00      0.63     45.61
+
+04:53:37    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:39     14229240  14908940    644756      4.04      4568    902584   4589060     28.78    942392    380240       368
+
+04:53:37          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:39      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:39      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:39        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:41        all      9.61      0.00     43.07      0.00      1.50     45.82
+
+04:53:39    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:41     14224444  14904200    649272      4.07      4568    902640   4587896     28.77    942112    380296       424
+
+04:53:39          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:41      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:41      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:41        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:43        all      9.57      0.00     43.70      0.00      0.76     45.97
+
+04:53:41    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:43     14226952  14906764    646516      4.05      4568    902696   4588568     28.78    942032    380352       480
+
+04:53:41          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:43      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:43      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:43        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:45        all      9.56      0.00     43.27      0.00      1.13     46.04
+
+04:53:43    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:45     14234244  14914112    639632      4.01      4568    902752   4587808     28.77    942516    380408       536
+
+04:53:43          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:45      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:45      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:45        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:47        all     10.03      0.00     43.11      0.00      1.13     45.74
+
+04:53:45    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:47     14215644  14895568    657944      4.13      4568    902808   4587704     28.77    942156    380464       592
+
+04:53:45          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:47      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:47      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:47        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:49        all      9.76      0.00     43.30      0.00      1.00     45.93
+
+04:53:47    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:49     14211972  14891956    661448      4.15      4568    902868   4588104     28.77    942168    380524       652
+
+04:53:47          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:49      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:49      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:49        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:51        all     10.25      0.00     42.75      0.12      1.38     45.50
+
+04:53:49    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:51     14233436  14913480    640272      4.02      4568    902928   4588336     28.78    941996    380584       712
+
+04:53:49          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:51      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:51      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:51        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:53        all      9.42      0.00     43.47      0.00      1.01     46.11
+
+04:53:51    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:53     14224704  14904804    648872      4.07      4568    902984   4588704     28.78    942284    380640       728
+
+04:53:51          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:53      nvme0n1      7.00      0.00     51.00      0.00      7.29      0.01      0.79      0.10
+04:53:53      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:53        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:55        all      9.94      0.00     43.90      0.00      0.25     45.91
+
+04:53:53    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:55     14217572  14897728    655708      4.11      4568    903040   4589064     28.78    942460    380696       800
+
+04:53:53          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:55      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:55      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:55        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:57        all      9.48      0.00     43.87      0.00      0.51     46.14
+
+04:53:55    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:57     14231048  14911260    642300      4.03      4568    903096   4587824     28.77    942300    380752       856
+
+04:53:55          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:57      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:57      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:57        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:53:59        all      9.89      0.00     43.80      0.00      0.63     45.68
+
+04:53:57    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:53:59     14236940  14917208    636492      3.99      4568    903152   4587864     28.77    942188    380808       912
+
+04:53:57          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:53:59      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:53:59      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:53:59        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:01        all      9.97      0.00     43.56      0.00      0.51     45.96
+
+04:53:59    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:01     14230788  14911096    642324      4.03      4568    903212   4587692     28.77    942280    380848       976
+
+04:53:59          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:01      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:01      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:01        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:03        all      9.58      0.00     42.66      0.00      2.11     45.65
+
+04:54:01    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:03     14231600  14911932    641340      4.02      4568    903216   4588088     28.77    942544    380872        28
+
+04:54:01          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:03      nvme0n1      3.00      0.00    476.00      0.00    158.67      0.01      1.50      0.10
+04:54:03      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:03        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:05        all     10.54      0.00     42.16      0.13      1.38     45.80
+
+04:54:03    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:05     14226044  14906472    647260      4.06      4568    903328   4587948     28.77    942400    380968       144
+
+04:54:03          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:05      nvme0n1      0.50      0.00      2.00      0.00      4.00      0.00      1.00      0.00
+04:54:05      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:05        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:07        all     10.36      0.00     42.20      0.00      1.50     45.94
+
+04:54:05    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:07     14225360  14905864    647668      4.06      4568    903388   4588576     28.78    942052    381044       200
+
+04:54:05          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:07      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:07      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:07        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:09        all      9.92      0.00     42.96      0.00      1.26     45.85
+
+04:54:07    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:09     14214868  14895428    657904      4.13      4568    903444   4588212     28.77    942020    381100       256
+
+04:54:07          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:09      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:09      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:09        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:11        all     10.19      0.00     42.98      0.00      1.49     45.34
+
+04:54:09    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:11     14230312  14910872    642860      4.03      4568    903444   4587980     28.77    942024    381100       256
+
+04:54:09          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:11      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:11      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:11        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:13        all      9.82      0.00     43.45      0.00      1.13     45.59
+
+04:54:11    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:13     14239620  14920244    633428      3.97      4568    903508   4588344     28.78    942300    381164       320
+
+04:54:11          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:13      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:13      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:13        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:15        all     10.04      0.00     43.16      0.00      1.00     45.80
+
+04:54:13    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:15     14242368  14923048    630300      3.95      4568    903620   4587972     28.77    942084    381220       432
+
+04:54:13          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:15      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:15      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:15        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:17        all      9.39      0.00     43.68      0.00      1.25     45.68
+
+04:54:15    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:17     14224372  14905156    648440      4.07      4568    903676   4588488     28.78    942120    381324       488
+
+04:54:15          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:17      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:17      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:17        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:19        all      9.94      0.00     43.14      0.00      1.01     45.91
+
+04:54:17    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:19     14225612  14906404    647296      4.06      4568    903676   4589068     28.78    942260    381332       488
+
+04:54:17          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:19      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:19      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:19        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:21        all      9.31      0.00     43.02      0.00      1.01     46.67
+
+04:54:19    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:21     14225984  14906832    646664      4.06      4568    903732   4588644     28.78    942220    381388       544
+
+04:54:19          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:21      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:21      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:21        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:23        all      9.46      0.00     43.88      0.00      0.76     45.90
+
+04:54:21    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:23     14218344  14899252    653984      4.10      4568    903792   4587948     28.77    942504    381448       604
+
+04:54:21          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:23      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:23      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:23        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:25        all      9.22      0.00     42.84      0.00      2.24     45.70
+
+04:54:23    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:25     14219088  14900056    653648      4.10      4568    903852   4588708     28.78    942544    381508       664
+
+04:54:23          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:25      nvme0n1      1.00      0.00     10.50      0.00     10.50      0.00      0.50      0.00
+04:54:25      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:25        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:27        all      9.27      0.00     42.61      0.00      2.26     45.86
+
+04:54:25    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:27     14223628  14904652    648912      4.07      4568    903908   4588516     28.78    942376    381564       720
+
+04:54:25          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:27      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:27      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:27        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:29        all     10.00      0.00     43.12      0.00      1.38     45.50
+
+04:54:27    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:29     14233244  14914324    639044      4.01      4568    903964   4597060     28.83    942552    381620       740
+
+04:54:27          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:29      nvme0n1      3.50      0.00     22.00      0.00      6.29      0.00      0.57      0.05
+04:54:29      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:29        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:31        all      9.80      0.00     43.34      0.00      1.01     45.85
+
+04:54:29    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:31     14233444  14914580    639164      4.01      4568    904020   4596564     28.83    942564    381676       808
+
+04:54:29          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:31      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:31      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:31        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:33        all     10.10      0.00     43.18      0.00      0.63     46.09
+
+04:54:31    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:33     14228512  14909704    643956      4.04      4568    904076   4597420     28.83    942636    381732        76
+
+04:54:31          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:33      nvme0n1      3.00      0.00    424.00      0.00    141.33      0.00      1.33      0.10
+04:54:33      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:33        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:35        all      9.80      0.00     43.97      0.00      0.50     45.73
+
+04:54:33    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:35     14240016  14921268    632160      3.96      4568    904136   4597232     28.83    942516    381792        80
+
+04:54:33          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:35      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:35      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:35        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:37        all      9.95      0.00     43.58      0.00      0.63     45.84
+
+04:54:35    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:37     14249124  14930436    623188      3.91      4568    904196   4596412     28.83    942428    381852       140
+
+04:54:35          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:37      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:37      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+04:54:37        CPU     %user     %nice   %system   %iowait    %steal     %idle
+04:54:39        all      9.69      0.00     44.28      0.00      0.25     45.79
+
+04:54:37    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+04:54:39     14242464  14923832    629888      3.95      4568    904252   4595232     28.82    942132    381908       196
+
+04:54:37          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+04:54:39      nvme0n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+04:54:39      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+Average:        CPU     %user     %nice   %system   %iowait    %steal     %idle
+Average:        all      9.85      0.00     43.34      0.09      1.05     45.67
+
+Average:    kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+Average:     14149869  14891076    662419      4.15      4568    964039   4589745     28.78    942429    441693     18054
+
+Average:          DEV       tps     rkB/s     wkB/s     dkB/s   areq-sz    aqu-sz     await     %util
+Average:      nvme0n1      9.17      0.23   2082.34      0.00    227.19      0.03      3.19      0.49
+Average:      nvme1n1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
